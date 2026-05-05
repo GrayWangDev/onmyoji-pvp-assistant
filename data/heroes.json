@@ -1,0 +1,274 @@
+
+[
+  {
+    "id": "kuzunoha",
+    "name": "葛叶",
+    "aliases": ["葛", "葛叶", "Kuzunoha"],
+    "type": "SSR"
+  },
+  {
+    "id": "taishakuten",
+    "name": "帝释天",
+    "aliases": ["帝", "taisha", "帝释天"],
+    "type": "SSR"
+  },
+  {
+    "id": "susanoo",
+    "name": "须佐之男",
+    "aliases": ["须佐", "须", "Susa"],
+    "type": "SSR"
+  },
+  {
+    "id": "kohaku",
+    "name": "白藏主",
+    "aliases": ["白", "小白"],
+    "type": "SSR"
+  },
+  {
+    "id": "taira",
+    "name": "平将门",
+    "aliases": ["平", "平将门"],
+    "type": "SSR"
+  },
+  {
+    "id": "hako",
+    "name": "匣中少女",
+    "aliases": ["匣", "匣子"],
+    "type": "SR"
+  },
+  {
+    "id": "srhoshi",
+    "name": "星熊童子",
+    "aliases": ["SR星熊"],
+    "type": "SR"
+  },
+  {
+    "id": "sponikiri",
+    "name": "天剑韧心鬼切",
+    "aliases": ["切", "奶切"],
+    "type": "SP"
+  },
+  {
+    "id": "spmio",
+    "name": "本真三尾狐",
+    "aliases": ["狐狸", "三尾狐", "狐", "SP狐"],
+    "type": "SP"
+  },
+  {
+    "id": "kotodama",
+    "name": "言灵",
+    "aliases": ["言", "言灵"],
+    "type": "SSR"
+  },
+  {
+    "id": "spinugami",
+    "name": "心友犬神",
+    "aliases": ["犬", "犬神", "SP犬"],
+    "type": "SP"
+  },
+  {
+    "id": "shiranui",
+    "name": "不知火",
+    "aliases": ["离", "阿离","不知火"],
+    "type": "SSR"
+  },
+  {
+    "id": "fengyang",
+    "name": "封阳君",
+    "aliases": ["封", "封阳"],
+    "type": "SSR"
+  },
+  {
+    "id": "enma",
+    "name": "阎魔",
+    "aliases": ["阎", "阎魔"],
+    "type": "SSR"
+  },
+  {
+    "id": "himiko",
+    "name": "卑弥呼",
+    "aliases": ["卑", "卑弥呼"],
+    "type": "SSR"
+  },
+  {
+    "id": "spungaikyo",
+    "name": "禅心云外镜",
+    "aliases": ["禅", "禅镜", "SP禅"],
+    "type": "SP"
+  },
+  {
+    "id": "guijin",
+    "name": "鬼金羊",
+    "aliases": ["羊", "鬼金羊"],
+    "type": "SSR"
+  },
+  {
+    "id": "odoguro",
+    "name": "荒骷髅",
+    "aliases": ["骷", "骷髅"],
+    "type": "SSR"
+  },
+  {
+    "id": "spshutendoji",
+    "name": "鬼王酒吞童子",
+    "aliases": ["吞", "酒吞", "sp吞"],
+    "type": "SP"
+  },
+  {
+    "id": "oitsuki",
+    "name": "流光追月神",
+    "aliases": ["追", "追月", "sp追"],
+    "type": "SP"
+  },
+  {
+    "id": "suzukagozen",
+    "name": "铃鹿御前",
+    "aliases": ["铃鹿", "06"],
+    "type": "SSR"
+  },
+  {
+    "id": "shinigami",
+    "name": "市加美",
+    "aliases": ["市", "美"],
+    "type": "SSR"
+  },
+  {
+    "id": "spyamausagi",
+    "name": "SP山兔",
+    "aliases": ["兔", "sp兔","兔子"],
+    "type": "SP"
+  },
+  {
+    "id": "spenmusubi",
+    "name": "SP缘结神",
+    "aliases": ["大缘", "缘"],
+    "type": "SP"
+  },
+  {
+    "id": "susabi",
+    "name": "荒",
+    "aliases": ["荒", "sp荒"],
+    "type": "SP"
+  },
+  {
+    "id": "spkingyo",
+    "name": "sp金鱼姬",
+    "aliases": ["金鱼", "sp金鱼"],
+    "type": "SP"
+  },
+  {
+    "id": "kannazuki",
+    "name": "神无月",
+    "aliases": ["神"],
+    "type": "SSR"
+  },
+  {
+    "id": "loongjue",
+    "name": "龙珏",
+    "aliases": ["龙"],
+    "type": "SSR"
+  },
+  {
+    "id": "menreiki",
+    "name": "面灵气",
+    "aliases": ["面", "小面"],
+    "type": "SSR"
+  },
+  {
+    "id": "tsukuyomi",
+    "name": "月读",
+    "aliases": ["月", "月读"],
+    "type": "SSR"
+  },
+  {
+    "id": "ungaikyo",
+    "name": "云外镜",
+    "aliases": ["云", "云外","镜子"],
+    "type": "SSR"
+  },
+  {
+    "id": "spzashiki",
+    "name": "sp座敷童子",
+    "aliases": ["座敷", "扭蛋"],
+    "type": "SP"
+  },
+  {
+    "id": "spyamalordenma",
+    "name": "sp大夜魔天阎魔",
+    "aliases": ["摩", "摩托","sp阎"],
+    "type": "SP"
+  },
+  {
+    "id": "spenenra",
+    "name": "sp烟烟罗",
+    "aliases": ["烟", "sp烟"],
+    "type": "SP"
+  },
+  {
+    "id": "spshishiro",
+    "name": "sp小鹿男",
+    "aliases": ["小鹿", "鹿"],
+    "type": "SP"
+  },
+  {
+    "id": "spfuken",
+    "name": "Sp不见岳",
+    "aliases": ["岳", "sp岳","火山"],
+    "type": "SP"
+  },
+  {
+    "id": "shiki",
+    "name": "季",
+    "aliases": ["季"],
+    "type": "SSR"
+  },
+  {
+    "id": "spyukionna",
+    "name": "sp雪女",
+    "aliases": ["雪", "sp雪"],
+    "type": "SP"
+  },
+  {
+    "id": "sptakiyashahime",
+    "name": "sp泷夜叉姬",
+    "aliases": ["sp茶几", "sp叉姬"],
+    "type": "SP"
+  },
+  {
+    "id": "spmomo",
+    "name": "sp桃花妖",
+    "aliases": ["桃", "sp桃"],
+    "type": "SP"
+  },
+  {
+    "id": "spinabakaguya",
+    "name": "sp因幡辉夜姬",
+    "aliases": ["因幡", "sp辉夜"],
+    "type": "SP"
+  },
+  {
+    "id": "uryotohime",
+    "name": "UR妖刀姬",
+    "aliases": ["刀", "妖刀","UR刀"],
+    "type": "UR"
+  },
+  {
+  "id": "sphoshiguma",
+  "name": "SP星熊童子",
+  "aliases": ["SP星熊童子", "SP熊", "sp熊"],
+  "type": "SP"
+},
+  {
+    "id": "spkohaku",
+    "name": "SP小白",
+    "aliases": ["sp白", "sp小白"],
+    "type": "SP"
+  },
+  {
+    "id": "spsenhime",
+    "name": "SP千姬",
+    "aliases": ["sp千", "sp千姬"],
+    "type": "SP"
+  }
+
+]

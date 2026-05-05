@@ -1,0 +1,63 @@
+{
+  "id": "expert_a_ban_magatsuhi_shijiamei_2026_05",
+  "version": "2026-05",
+  "author": "高手A",
+  "our_ban": "magatsuhi",
+  "system": "shijiamei",
+  "system_name": "ban祸津神 · 市佳美版本",
+  "enabled": true,
+  "rules": [
+    {
+      "id": "rule_001",
+      "title": "对 ban禅离队",
+      "condition": {
+        "enemy_ban": "zenkagami",
+        "enemy_pattern": "离队",
+        "enemy_picks": []
+      },
+      "plans": [
+        {
+          "id": "kuzu_tun_kuro_kiri_safe",
+          "name": "葛吞骷切",
+          "picks": ["kuzunoha", "shuten_doji", "onikiri"],
+          "builds": ["kuzunoha_default"],
+          "style": ["稳妥", "新手友好"],
+          "difficulty": 2,
+          "risk_level": "低",
+          "reason": "对 ban禅离队更稳，适合不熟悉复杂变阵的玩家。"
+        },
+        {
+          "id": "kuzu_teisu_force",
+          "name": "葛帝须硬来",
+          "picks": ["kuzunoha", "teishakuten", "susanoo"],
+          "builds": ["kuzunoha_default"],
+          "style": ["不变阵", "熟练向"],
+          "difficulty": 4,
+          "risk_level": "中",
+          "reason": "保持葛帝须体系节奏，适合熟悉后续翻牌的人。"
+        }
+      ]
+    },
+    {
+      "id": "rule_002",
+      "title": "对挖土速攻",
+      "condition": {
+        "enemy_ban": "",
+        "enemy_pattern": "挖土",
+        "enemy_picks": []
+      },
+      "plans": [
+        {
+          "id": "sp_hoshiguma_jizo_vs_dig",
+          "name": "地藏星熊抗挖土",
+          "picks": ["sp_hoshiguma"],
+          "builds": ["sp_hoshiguma_jizo_hp_hit_hp"],
+          "style": ["抗速攻", "防爆发"],
+          "difficulty": 2,
+          "risk_level": "低",
+          "reason": "对方是一速加爆发输出时，优先用地藏星熊抗第一波伤害。"
+        }
+      ]
+    }
+  ]
+}

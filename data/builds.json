@@ -1,0 +1,200 @@
+[
+  {
+    "id": "sp_hoshiguma_kyosen_spd_hit_hp",
+    "hero_id": "sphoshiguma",
+    "label": "共潜 速/命/生",
+    "soul": "共潜",
+    "stats": ["速度", "效果命中", "生命"],
+    "tags": ["常规", "中速", "解控"],
+    "use_case": "一般需要上星熊的对局"
+  },
+  {
+    "id": "sp_hoshiguma_jizo_hp_hit_hp",
+    "hero_id": "sphoshiguma",
+    "label": "地藏 生/命/生",
+    "soul": "地藏像",
+    "stats": ["生命", "效果命中", "生命"],
+    "tags": ["抗速攻", "防爆发", "挖土对策"],
+    "use_case": "专门应对一速加爆发输出的挖土阵容"
+  },
+  {
+    "id": "kuzunoha_default",
+    "hero_id": "kuzunoha",
+    "label": "常规葛叶",
+    "soul": "",
+    "stats": ["速度", "攻击/生命", "攻击/生命"],
+    "tags": ["葛队核心"],
+    "use_case": "ban祸体系常用开局"
+  },
+  {
+    "id": "ssr_taishakuten_oil_spd_hit_hp",
+    "hero_id": "taishakuten",
+    "label": "油赤子 速/命/生",
+    "soul": "油赤子",
+    "stats": ["速度", "效果命中", "生命"],
+    "tags": ["葛帝标准开局"],
+    "use_case": "ban祸体系常用开局一般配合套装葛"
+  },
+  {
+    "id": "ssr_taishakuten_azure_spd_hit_hp",
+    "hero_id": "taishakuten",
+    "label": "火灵 速/命/生",
+    "soul": "火灵",
+    "stats": ["速度", "效果命中", "生命"],
+    "tags": ["葛帝标准开局"],
+    "use_case": "如果葛叶是散件队伍里缺火灵可以考虑上火灵帝"
+  },
+  {
+    "id": "ssr_susanoo_wq_atk_atk_crit",
+    "hero_id": "susanoo",
+    "label": "须佐 攻/攻/暴",
+    "soul": "网切",
+    "stats": ["攻击", "攻击", "暴伤"],
+    "tags": ["葛帝须","葛内战"],
+    "use_case": "ban祸葛队内战常用开局"
+  },
+  {
+    "id": "ssr_susanoo_seductress_spd_atk_crit",
+    "hero_id": "susanoo",
+    "label": "快须佐 速/攻/暴",
+    "soul": "针女",
+    "stats": ["速度", "攻击", "暴伤"],
+    "tags": ["葛帝须","快须"],
+    "use_case": "ban祸葛队内战常用开局"
+  },
+  {
+    "id": "ssr_susanoo_jizo_hp_atk_crit",
+    "hero_id": "susanoo",
+    "label": "肉地藏须佐 生/攻/暴",
+    "soul": "地藏",
+    "stats": ["攻击/生命", "攻击/生命", "暴击/暴伤"],
+    "tags": ["葛帝须","肉须"],
+    "use_case": "葛帝须内战慢葛可以上肉地藏须"
+  },
+  {
+    "id": "ssr_kohaku_default",
+    "hero_id": "kohaku",
+    "label": "小白 速/生/攻",
+    "soul": "",
+    "stats": ["速度", "攻击/生命", "攻击/生命"],
+    "tags": ["葛白","抢速"],
+    "use_case": "葛白通过高速小白合守抢速"
+  },
+  {
+    "id": "ssr_kohaku_haitu",
+    "hero_id": "kohaku",
+    "label": "小白 速/生/攻",
+    "soul": "奉海图",
+    "stats": ["速度", "攻击/生命", "攻击/生命"],
+    "tags": ["葛白","抗伤"],
+    "use_case": "葛内战怕慢被秒可以上海图白抗伤害"
+  },
+  {
+    "id": "ssr_kohaku_seaspirit",
+    "hero_id": "kohaku",
+    "label": "小白 速/生/攻",
+    "soul": "蚌精",
+    "stats": ["速度", "攻击/生命", "攻击/生命"],
+    "tags": ["葛白","抗伤","防花"],
+    "use_case": "缺蚌精可以上蚌精白防花"
+  },
+  {
+    "id": "sp_kohaku_seaspirit",
+    "hero_id": "spkohaku",
+    "label": "sp白 生/生/暴",
+    "soul": "蚌精",
+    "stats": ["生命", "生命", "暴击/暴伤"],
+    "tags": ["防挖","打火山"],
+    "use_case": "防茶几挖土或者打火山可以上sp白"
+  },
+  {
+    "id": "ssr_taira_souledge",
+    "hero_id": "taira",
+    "label": "平 攻/防/暴",
+    "soul": "薙魂",
+    "stats": ["攻击/防御", "攻击/防御", "暴击/暴伤"],
+    "tags": ["防挖","打荒","防离猫"],
+    "use_case": "打离队可以上薙魂平"
+  },
+  {
+    "id": "sr_hako_seaspirit",
+    "hero_id": "hako",
+    "label": "匣子 生/生/暴",
+    "soul": "蚌精",
+    "stats": ["生命", "生命", "暴击/暴伤"],
+    "tags": ["葛帝","防言","防花"],
+    "use_case": "葛帝须可以补匣子防言灵和花"
+  },
+  {
+    "id": "sr_hoshi_seaspirit",
+    "hero_id": "srhoshi",
+    "label": "星熊 速/命/生",
+    "soul": "蚌精",
+    "stats": ["速度", "效果命中", "生命"],
+    "tags": ["葛帝","内战","防花"],
+    "use_case": "葛帝须5手常用式神"
+  },
+  {
+    "id": "sr_hoshi_nianhuo",
+    "hero_id": "srhoshi",
+    "label": "星熊 速/命/生",
+    "soul": "遗念火",
+    "stats": ["速度", "效果命中", "生命"],
+    "tags": ["葛帝","内战"],
+    "use_case": "葛帝须5手缺火可以上"
+  },
+  {
+    "id": "sp_onikiri_souledge",
+    "hero_id": "sponikiri",
+    "label": "奶切 速/攻/生",
+    "soul": "薙魂",
+    "stats": ["速度", "攻击/生命", "攻击/生命"],
+    "tags": ["打离队","防白面","防白葛"],
+    "use_case": "打离队时可以上薙魂奶切"
+  },
+  {
+    "id": "sp_onikiri_gongqian",
+    "hero_id": "sponikiri",
+    "label": "奶切 速/攻/生",
+    "soul": "共潜",
+    "stats": ["速度", "攻击/生命", "攻击/生命"],
+    "tags": ["打离队","防白面","防白葛"],
+    "use_case": "队伍里有薙魂平可以上共潜奶切"
+  },
+  {
+    "id": "sp_mio",
+    "hero_id": "spmio",
+    "label": "狐狸 攻/攻/暴",
+    "soul": "片叶",
+    "stats": ["攻击", "攻击", "暴伤"],
+    "tags": ["葛帝须","偷鸡"],
+    "use_case": "配合须偷鸡或者防ban阎的ur刀"
+  },
+  {
+    "id": "ssr_kotodama_zhongling",
+    "hero_id": "kotodama",
+    "label": "言灵 速/命/生",
+    "soul": "钟灵",
+    "stats": ["速度", "效果命中", "生命"],
+    "tags": ["葛帝","神言","防千音"],
+    "use_case": "策略卡用处很多能打葛平、神言打火山、防千音"
+  },
+  {
+    "id": "sp_inugami",
+    "hero_id": "spinugami",
+    "label": "sp犬神 攻/命/暴",
+    "soul": "魅妖",
+    "stats": ["攻击", "效果命中", "暴击/暴伤"],
+    "tags": ["葛帝须","防言"],
+    "use_case": "葛内战看到言灵上犬肯定没错"
+  },
+  {
+    "id": "ssr_fengyang",
+    "hero_id": "fengyang",
+    "label": "封阳君 速/命/生",
+    "soul": "钟灵",
+    "stats": ["速度", "效果命中", "生命"],
+    "tags": ["打火山","神封"],
+    "use_case": "神封打火山好用"
+  }
+]
