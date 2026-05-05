@@ -1,6 +1,8 @@
-# PVP BP Helper
+# Onmyoji PVP Assistant
 
-这是一个给公会用的 PVP BP 规则库雏形。
+这是一个给公会用的阴阳师 PVP 助手雏形。
+
+当前阶段先从 BP 推荐和御魂配置规则库开始，后续可以逐步扩展到阵容教学、版本策略管理、截图识别，以及战斗中操作建议。
 
 ## 目录
 
@@ -8,6 +10,7 @@
 - `data/builds.json`: 御魂配置库，记录同一个角色的不同配置。
 - `data/versions/2026-05/meta.json`: 版本说明。
 - `data/versions/2026-05/ban_magatsuhi/shijiamei/expert_a.json`: 某个版本、某个 ban 位、某个体系、某个高手的策略包。
+- `scripts/validate_data.py`: 数据校验脚本。
 
 ## 第一步先填什么
 
