@@ -103,7 +103,7 @@
     "type": "SSR"
   },
   {
-    "id": "odoguro",
+    "id": "odokuro",
     "name": "荒骷髅",
     "aliases": ["骷", "骷髅"],
     "type": "SSR"
@@ -269,6 +269,24 @@
     "name": "SP千姬",
     "aliases": ["sp千", "sp千姬"],
     "type": "SP"
+  },
+  {
+    "id": "ssrichi",
+    "name": "一目连",
+    "aliases": ["一目", "连"],
+    "type": "SSR"
+  },
+  {
+    "id": "ssrmagetsuhi",
+    "name": "祸津神",
+    "aliases": ["祸", "霍金"],
+    "type": "SSR"
+  },
+  {
+    "id": "miku",
+    "name": "初音",
+    "aliases": ["初音", "音"],
+    "type": "SSR"
   }
 
 ]

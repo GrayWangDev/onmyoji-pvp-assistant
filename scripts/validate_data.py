@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-HEROES_PATH = ROOT / "data" / "heroes.json"
+SHIKIGAMI_PATH = ROOT / "data" / "shikigami.json"
 BUILDS_PATH = ROOT / "data" / "builds.json"
 ID_PATTERN = re.compile(r"^[a-z0-9_]+$")
 
@@ -19,47 +19,47 @@ def collect_duplicates(items):
     return {key: values for key, values in items.items() if len(values) > 1}
 
 
-def validate_heroes():
-    heroes = load_json(HEROES_PATH)
+def validate_shikigami():
+    shikigami = load_json(SHIKIGAMI_PATH)
     issues = []
     ids = defaultdict(list)
     names = defaultdict(list)
     aliases = defaultdict(list)
 
-    for index, hero in enumerate(heroes):
-        label = hero.get("name") or f"index {index}"
+    for index, item in enumerate(shikigami):
+        label = item.get("name") or f"index {index}"
 
         for field in ("id", "name", "aliases", "type"):
-            if field not in hero:
+            if field not in item:
                 issues.append(f"{label}: 缺少字段 {field}")
 
-        hero_id = hero.get("id", "")
-        name = hero.get("name", "")
-        hero_aliases = hero.get("aliases", [])
+        shikigami_id = item.get("id", "")
+        name = item.get("name", "")
+        shikigami_aliases = item.get("aliases", [])
 
-        if not isinstance(hero_id, str) or not hero_id.strip():
+        if not isinstance(shikigami_id, str) or not shikigami_id.strip():
             issues.append(f"{label}: id 不能为空")
-        elif not ID_PATTERN.match(hero_id):
-            issues.append(f"{label}: id 建议只用小写英文、数字、下划线，目前是 {hero_id}")
+        elif not ID_PATTERN.match(shikigami_id):
+            issues.append(f"{label}: id 建议只用小写英文、数字、下划线，目前是 {shikigami_id}")
 
         if not isinstance(name, str) or not name.strip():
             issues.append(f"{label}: name 不能为空")
 
-        if not isinstance(hero_aliases, list):
+        if not isinstance(shikigami_aliases, list):
             issues.append(f"{label}: aliases 必须是数组")
-            hero_aliases = []
+            shikigami_aliases = []
 
-        ids[hero_id].append(label)
-        names[name].append(hero_id)
+        ids[shikigami_id].append(label)
+        names[name].append(shikigami_id)
 
-        for alias in hero_aliases:
-            aliases[alias].append(f"{hero_id}:{name}")
+        for alias in shikigami_aliases:
+            aliases[alias].append(f"{shikigami_id}:{name}")
 
     duplicate_ids = collect_duplicates(ids)
     duplicate_names = collect_duplicates(names)
     duplicate_aliases = collect_duplicates(aliases)
 
-    print(f"角色数量: {len(heroes)}")
+    print(f"式神数量: {len(shikigami)}")
 
     if duplicate_ids:
         print("\n重复 id:")
@@ -76,10 +76,10 @@ def validate_heroes():
         for key, values in duplicate_aliases.items():
             print(f"- {key}: {', '.join(values)}")
 
-    return heroes, issues
+    return shikigami, issues
 
 
-def validate_builds(hero_ids):
+def validate_builds(shikigami_ids):
     builds = load_json(BUILDS_PATH)
     issues = []
     ids = defaultdict(list)
@@ -87,20 +87,20 @@ def validate_builds(hero_ids):
     for index, build in enumerate(builds):
         label = build.get("id") or f"index {index}"
 
-        for field in ("id", "hero_id", "label", "soul", "stats", "tags", "use_case"):
+        for field in ("id", "shikigami_id", "label", "soul", "stats", "tags", "use_case"):
             if field not in build:
                 issues.append(f"{label}: 缺少字段 {field}")
 
         build_id = build.get("id", "")
-        hero_id = build.get("hero_id", "")
+        shikigami_id = build.get("shikigami_id", "")
 
         if not isinstance(build_id, str) or not build_id.strip():
             issues.append(f"{label}: id 不能为空")
         elif not ID_PATTERN.match(build_id):
             issues.append(f"{label}: id 建议只用小写英文、数字、下划线，目前是 {build_id}")
 
-        if hero_id not in hero_ids:
-            issues.append(f"{label}: hero_id 不存在于 heroes.json: {hero_id}")
+        if shikigami_id not in shikigami_ids:
+            issues.append(f"{label}: shikigami_id 不存在于 shikigami.json: {shikigami_id}")
 
         if not isinstance(build.get("stats", []), list):
             issues.append(f"{label}: stats 必须是数组")
@@ -120,10 +120,10 @@ def validate_builds(hero_ids):
 
 
 def main():
-    heroes, hero_issues = validate_heroes()
-    hero_ids = {hero["id"] for hero in heroes}
-    _, build_issues = validate_builds(hero_ids)
-    issues = hero_issues + build_issues
+    shikigami, shikigami_issues = validate_shikigami()
+    shikigami_ids = {item["id"] for item in shikigami}
+    _, build_issues = validate_builds(shikigami_ids)
+    issues = shikigami_issues + build_issues
 
     if issues:
         print("\n需要处理:")

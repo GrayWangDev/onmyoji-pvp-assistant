@@ -1,63 +1,569 @@
 {
   "id": "expert_a_ban_magatsuhi_shijiamei_2026_05",
+  "schema": "enemy_system_prediction_v1",
   "version": "2026-05",
   "author": "高手A",
-  "our_ban": "magatsuhi",
+  "our_ban": "ssrmagetsuhi",
   "system": "shijiamei",
-  "system_name": "ban祸津神 · 市佳美版本",
+  "system_name": "ban祸津神 · 市加美版本",
   "enabled": true,
-  "rules": [
+  "matchups": [
     {
-      "id": "rule_001",
-      "title": "对 ban禅离队",
-      "condition": {
-        "enemy_ban": "zenkagami",
-        "enemy_pattern": "离队",
-        "enemy_picks": []
+      "id": "vs_kuzunoha_mirror_common",
+      "title": "葛叶内战通用处理",
+      "enemy_bans": [
+        "ssrmagetsuhi",
+        "spungaikyo",
+        "odokuro"
+      ],
+      "default_recommendation": {
+        "id": "kuzunoha_open",
+        "name": "葛叶起手",
+        "first_picks": [
+          "kuzunoha"
+        ],
+        "first_builds": [
+          "kuzunoha_default"
+        ],
+        "reason": "对方这些ban位下都有可能进入葛叶内战，先按葛叶开局准备。"
       },
-      "plans": [
+      "enemy_systems": [
         {
-          "id": "kuzu_tun_kuro_kiri_safe",
-          "name": "葛吞骷切",
-          "picks": ["kuzunoha", "shuten_doji", "onikiri"],
-          "builds": ["kuzunoha_default"],
-          "style": ["稳妥", "新手友好"],
-          "difficulty": 2,
-          "risk_level": "低",
-          "reason": "对 ban禅离队更稳，适合不熟悉复杂变阵的玩家。"
-        },
-        {
-          "id": "kuzu_teisu_force",
-          "name": "葛帝须硬来",
-          "picks": ["kuzunoha", "teishakuten", "susanoo"],
-          "builds": ["kuzunoha_default"],
-          "style": ["不变阵", "熟练向"],
-          "difficulty": 4,
-          "risk_level": "中",
-          "reason": "保持葛帝须体系节奏，适合熟悉后续翻牌的人。"
+          "id": "kuzunoha_mirror",
+          "name": "葛叶内战",
+          "initial_score": 60,
+          "core_picks": [
+            "kuzunoha"
+          ],
+          "confirm_picks": [
+            "kuzunoha"
+          ],
+          "fuzzy_picks": [],
+          "notes": "对方一手葛叶时，按葛叶内战继续缩小分支。",
+          "recommended_lineups": [
+            {
+              "id": "mirror_vs_kuzu_taisha_susa",
+              "name": "对葛帝须",
+              "enemy_opening": [
+                "kuzunoha",
+                "taishakuten",
+                "susanoo"
+              ],
+              "picks": [
+                "kuzunoha",
+                "taishakuten",
+                "susanoo",
+                "kohaku"
+              ],
+              "builds": [
+                "kuzunoha_default",
+                "ssr_kohaku_default"
+              ],
+              "style": [
+                "内战",
+                "常规"
+              ],
+              "difficulty": 3,
+              "risk_level": "中",
+              "reason": "对方葛叶、帝释天、须佐开局时，我方走葛帝须白，5手根据对方4手变化。",
+              "fifth_pick_branches": [
+                {
+                  "id": "enemy_fourth_hako",
+                  "enemy_pick_at": {
+                    "4": "hako"
+                  },
+                  "next_picks": [
+                    "srhoshi"
+                  ],
+                  "reason": "对方4手翻匣子时，我方5手补SR星熊。"
+                },
+                {
+                  "id": "enemy_fourth_kohaku",
+                  "enemy_pick_at": {
+                    "4": "kohaku"
+                  },
+                  "next_picks": [
+                    "sponikiri"
+                  ],
+                  "alternatives": [
+                    {
+                      "pick": "spmio",
+                      "condition": "我方葛叶和SSR小白都比对面快时，5手可以狐狸。"
+                    }
+                  ],
+                  "reason": "对方4手也是SSR白时，默认我方葛叶和SSR小白都比对面慢就补奶切；快则可补狐狸。"
+                }
+              ]
+            },
+            {
+              "id": "mirror_vs_kuzu_taisha_kotodama",
+              "name": "对葛帝言",
+              "enemy_opening": [
+                "kuzunoha",
+                "taishakuten",
+                "kotodama"
+              ],
+              "picks": [
+                "kuzunoha",
+                "taishakuten",
+                "susanoo",
+                "hako"
+              ],
+              "builds": [
+                "kuzunoha_default",
+                "sr_hako_seaspirit"
+              ],
+              "fifth_options": [
+                "spinugami",
+                "kotodama"
+              ],
+              "style": [
+                "内战",
+                "反制言灵"
+              ],
+              "difficulty": 3,
+              "risk_level": "中",
+              "reason": "对方1葛2帝3言开局时，我方推荐葛帝须匣，5手SP犬或言灵皆可。"
+            },
+            {
+              "id": "mirror_vs_kuzu_shiranui_fengyang",
+              "name": "对葛离封",
+              "enemy_opening": [
+                "kuzunoha",
+                "shiranui",
+                "fengyang"
+              ],
+              "picks": [
+                "kuzunoha",
+                "taishakuten",
+                "susanoo",
+                "sponikiri"
+              ],
+              "builds": [
+                "kuzunoha_default"
+              ],
+              "lineup_slots": [
+                {
+                  "slot": 2,
+                  "options": [
+                    "taishakuten",
+                    "spshutendoji"
+                  ],
+                  "note": "帝释天和鬼吞二选一。"
+                },
+                {
+                  "slot": 3,
+                  "options": [
+                    "susanoo",
+                    "odokuro"
+                  ],
+                  "note": "一般帝配须，吞配骷；骷髅可能被ban，有啥上啥。",
+                  "disabled_when_enemy_bans": {
+                    "odokuro": [
+                      "odokuro"
+                    ]
+                  }
+                },
+                {
+                  "slot": 4,
+                  "options": [
+                    "sponikiri"
+                  ],
+                  "note": "4手奶切。"
+                },
+                {
+                  "slot": 5,
+                  "options": [
+                    "taira",
+                    "spyamalordenma"
+                  ],
+                  "note": "5手平将门或摩托。"
+                }
+              ],
+              "style": [
+                "内战",
+                "应对离封"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "对方1葛2离3封时，我方1葛，2手帝/吞，3手骷/须，4奶切，5平/摩托。通常帝配须，吞配骷；骷髅被ban则优先帝须。"
+            }
+          ]
         }
-      ]
+      ],
+      "ambiguous_policy": {
+        "keep_all_systems": true,
+        "message": "如果只看到葛叶但还没看到后续2、3手，就先按葛叶内战保留多个分支。"
+      }
     },
     {
-      "id": "rule_002",
-      "title": "对挖土速攻",
-      "condition": {
-        "enemy_ban": "",
-        "enemy_pattern": "挖土",
-        "enemy_picks": []
+      "id": "vs_enemy_ban_kuzunoha",
+      "title": "我方ban祸 vs 对方ban葛",
+      "enemy_ban": "kuzunoha",
+      "default_recommendation": {
+        "id": "enma_oto_open",
+        "name": "阎音起手",
+        "first_picks": [
+          "enma",
+          "miku"
+        ],
+        "first_builds": [],
+        "reason": "对方ban葛后常见是禅羊或火山，阎音起手能同时覆盖两个方向。"
       },
-      "plans": [
+      "enemy_systems": [
         {
-          "id": "sp_hoshiguma_jizo_vs_dig",
-          "name": "地藏星熊抗挖土",
-          "picks": ["sp_hoshiguma"],
-          "builds": ["sp_hoshiguma_jizo_hp_hit_hp"],
-          "style": ["抗速攻", "防爆发"],
-          "difficulty": 2,
-          "risk_level": "低",
-          "reason": "对方是一速加爆发输出时，优先用地藏星熊抗第一波伤害。"
+          "id": "zen_yang",
+          "name": "禅羊体系",
+          "initial_score": 50,
+          "core_picks": [
+            "spungaikyo",
+            "guijin"
+          ],
+          "confirm_picks": [
+            "spungaikyo"
+          ],
+          "fuzzy_picks": [],
+          "notes": "看到禅镜后基本确认对方走禅队。",
+          "recommended_lineups": [
+            {
+              "id": "enma_miku_spsenhime_odokuro_spungaikyo",
+              "name": "阎音千骷禅",
+              "picks": [
+                "enma",
+                "miku",
+                "spsenhime",
+                "odokuro",
+                "spungaikyo"
+              ],
+              "builds": [],
+              "style": [
+                "针对禅队",
+                "稳定"
+              ],
+              "difficulty": 2,
+              "risk_level": "低",
+              "reason": "对方确认禅队后，按阎音千骷禅应对。"
+            }
+          ]
+        },
+        {
+          "id": "huoshan",
+          "name": "火山体系",
+          "initial_score": 50,
+          "core_picks": [
+            "taira",
+            "spfuken",
+            "spzashiki",
+            "spyamalordenma",
+            "spshutendoji"
+          ],
+          "confirm_picks": [
+            "taira",
+            "spfuken"
+          ],
+          "fuzzy_picks": [],
+          "notes": "看到平、SP岳优先按火山处理。",
+          "recommended_lineups": [
+            {
+              "id": "enma_miku_kannazuki_fengyang_shiki",
+              "name": "阎音神封/言市",
+              "picks": [
+                "enma",
+                "miku",
+                "kannazuki",
+                "fengyang",
+                "shinigami"
+              ],
+              "builds": [],
+              "alternatives": [
+                {
+                  "replace": "fengyang",
+                  "with": "kotodama",
+                  "note": "需要沉默或封阳君不合适时，用言灵替代。"
+                }
+              ],
+              "style": [
+                "针对火山",
+                "控制"
+              ],
+              "difficulty": 3,
+              "risk_level": "中",
+              "reason": "对方进入火山体系时，用神封/言市方向处理。"
+            }
+          ]
         }
-      ]
+      ],
+      "ambiguous_policy": {
+        "keep_all_systems": true,
+        "message": "对方已选式神还不能确认体系时，继续保留所有可能体系和对应推荐。"
+      }
+    },
+    {
+      "id": "vs_dig_speed_push_common",
+      "title": "挖土速推通用处理",
+      "enemy_bans": [
+        "enma",
+        "odokuro",
+        "taira"
+      ],
+      "default_recommendation": {
+        "id": "kuzu_taisha_open_vs_dig",
+        "name": "葛帝起手观察",
+        "first_picks": [
+          "kuzunoha",
+          "taishakuten"
+        ],
+        "first_builds": [
+          "kuzunoha_default"
+        ],
+        "reason": "对方ban阎魔、骷髅或平时都有可能走挖土速推，先用葛帝起手观察对方是否带面。"
+      },
+      "enemy_systems": [
+        {
+          "id": "dig_with_menreiki",
+          "name": "带面挖土",
+          "initial_score": 50,
+          "core_picks": [
+            "spinabakaguya",
+            "menreiki",
+            "loongjue",
+            "sptakiyashahime"
+          ],
+          "confirm_picks": [
+            "menreiki"
+          ],
+          "fuzzy_picks": [
+            "spinabakaguya",
+            "loongjue",
+            "sptakiyashahime"
+          ],
+          "notes": "挖土里看到面灵气就按带面挖土处理。",
+          "recommended_lineups": [
+            {
+              "id": "kuzu_taisha_odo_moto_ichi_vs_face_dig",
+              "name": "葛帝骷摩连",
+              "enemy_opening_contains": [
+                "menreiki"
+              ],
+              "picks": [
+                "kuzunoha",
+                "taishakuten",
+                "odokuro",
+                "spyamalordenma",
+                "ssrichi"
+              ],
+              "builds": [
+                "kuzunoha_default"
+              ],
+              "style": [
+                "防挖土",
+                "固定解"
+              ],
+              "difficulty": 3,
+              "risk_level": "中",
+              "reason": "带面的挖土统一用葛帝骷摩处理，5手补2x一目连。"
+            }
+          ]
+        },
+        {
+          "id": "dig_without_menreiki",
+          "name": "不带面挖土",
+          "initial_score": 50,
+          "core_picks": [
+            "spinabakaguya",
+            "loongjue",
+            "sptakiyashahime",
+            "uryotohime"
+          ],
+          "confirm_picks": [
+            "spinabakaguya",
+            "loongjue",
+            "sptakiyashahime",
+            "uryotohime"
+          ],
+          "excluded_picks": [
+            "menreiki"
+          ],
+          "fuzzy_picks": [
+            "spinabakaguya",
+            "loongjue",
+            "sptakiyashahime"
+          ],
+          "notes": "没有面灵气时，按不带面挖土处理；常见核心是因幡加龙珏或SP茶几。",
+          "recommended_lineups": [
+            {
+              "id": "kuzu_taisha_susa_kohaku_vs_no_face_dig",
+              "name": "葛帝须白",
+              "picks": [
+                "kuzunoha",
+                "taishakuten",
+                "susanoo",
+                "kohaku"
+              ],
+              "builds": [
+                "kuzunoha_default",
+                "ssr_kohaku_default"
+              ],
+              "style": [
+                "防挖土",
+                "常规"
+              ],
+              "difficulty": 3,
+              "risk_level": "中",
+              "reason": "不带面灵气的挖土走葛帝须白。",
+              "fifth_pick_branches": [
+                {
+                  "id": "enemy_has_ur_yotohime",
+                  "enemy_picks_contains": [
+                    "uryotohime"
+                  ],
+                  "next_picks": [
+                    "spmio"
+                  ],
+                  "reason": "对方阵容有UR刀时，5手补狐狸。"
+                },
+                {
+                  "id": "enemy_no_ur_yotohime",
+                  "enemy_picks_excludes": [
+                    "uryotohime"
+                  ],
+                  "next_picks": [
+                    "spmomo",
+                    "shiki"
+                  ],
+                  "reason": "对方没有UR刀时，5手可以SP桃花或季。"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "ambiguous_policy": {
+        "keep_all_systems": true,
+        "message": "只看到因幡、龙珏或SP茶几时先判断为挖土，但是否带面还不确定；看到面灵气后锁定带面挖土。"
+      }
+    },
+    {
+      "id": "vs_enemy_ban_spungaikyo_lifeng",
+      "title": "我方ban祸 vs 对方ban禅离封队",
+      "enemy_ban": "spungaikyo",
+      "default_recommendation": {
+        "id": "kuzu_odo_shuten_open_vs_lifeng",
+        "name": "葛骷吞固定开",
+        "first_picks": [
+          "kuzunoha",
+          "odokuro",
+          "spshutendoji"
+        ],
+        "first_builds": [
+          "kuzunoha_default"
+        ],
+        "reason": "打ban禅的离封队时，我方固定葛骷吞开，再看对方后续分支补4、5手。"
+      },
+      "enemy_systems": [
+        {
+          "id": "lifeng_team",
+          "name": "离封队",
+          "initial_score": 70,
+          "core_picks": [
+            "shiranui",
+            "fengyang"
+          ],
+          "confirm_picks": [
+            "shiranui",
+            "fengyang"
+          ],
+          "fuzzy_picks": [],
+          "notes": "对方ban禅且出现离封时，按离封队处理；我方前三手固定葛骷吞。",
+          "recommended_lineups": [
+            {
+              "id": "lifeng_vs_li_feng_himiko_spcha",
+              "name": "对离封卑SP茶几",
+              "enemy_opening": [
+                "shiranui",
+                "fengyang",
+                "himiko",
+                "sptakiyashahime"
+              ],
+              "picks": [
+                "kuzunoha",
+                "odokuro",
+                "spshutendoji",
+                "sponikiri",
+                "enma"
+              ],
+              "builds": [
+                "kuzunoha_default"
+              ],
+              "style": [
+                "应对离封",
+                "补控制"
+              ],
+              "difficulty": 3,
+              "risk_level": "中",
+              "reason": "对方1离2封3卑4SP茶几时，我方葛骷吞开，4手奶切，5手阎魔。"
+            },
+            {
+              "id": "lifeng_vs_li_feng_odo_kotodama",
+              "name": "对离封骷言",
+              "enemy_opening": [
+                "shiranui",
+                "fengyang",
+                "odokuro",
+                "kotodama"
+              ],
+              "picks": [
+                "kuzunoha",
+                "odokuro",
+                "spshutendoji",
+                "enma",
+                "spmomo"
+              ],
+              "builds": [
+                "kuzunoha_default"
+              ],
+              "style": [
+                "应对离封",
+                "保护"
+              ],
+              "difficulty": 3,
+              "risk_level": "中",
+              "reason": "对方离封骷言时，我方葛骷吞开，4手阎魔，5手SP桃花。"
+            },
+            {
+              "id": "lifeng_vs_li_feng_kuzu_odo",
+              "name": "对离封葛骷",
+              "enemy_opening": [
+                "shiranui",
+                "fengyang",
+                "kuzunoha",
+                "odokuro"
+              ],
+              "picks": [
+                "kuzunoha",
+                "odokuro",
+                "spshutendoji",
+                "sponikiri",
+                "spyamalordenma"
+              ],
+              "builds": [
+                "kuzunoha_default"
+              ],
+              "style": [
+                "应对离封",
+                "反打"
+              ],
+              "difficulty": 3,
+              "risk_level": "中",
+              "reason": "对方离封葛骷时，我方葛骷吞开，4手奶切，5手摩托。"
+            }
+          ]
+        }
+      ],
+      "ambiguous_policy": {
+        "keep_all_systems": true,
+        "message": "只确认离封但还没看到3、4手时，先保持葛骷吞固定开，并保留离封队后续分支。"
+      }
     }
   ]
 }

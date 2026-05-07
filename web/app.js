@@ -1,0 +1,422 @@
+const VERSION = "2026-05";
+const STRATEGY_PATH = "../data/versions/2026-05/ban_magatsuhi/shijiamei/expert_a.json";
+
+const state = {
+  shikigami: [],
+  builds: [],
+  strategy: null,
+  aliasToId: new Map(),
+  shikigamiById: new Map(),
+  buildsById: new Map(),
+  ourBan: "ssrmagetsuhi",
+  enemyBan: "",
+  enemyPicks: [],
+  query: "",
+};
+
+const els = {
+  ourBanSelect: document.querySelector("#ourBanSelect"),
+  enemyBanSelect: document.querySelector("#enemyBanSelect"),
+  enemyPickedList: document.querySelector("#enemyPickedList"),
+  shikigamiSearch: document.querySelector("#shikigamiSearch"),
+  quickPickGrid: document.querySelector("#quickPickGrid"),
+  results: document.querySelector("#results"),
+  contextLine: document.querySelector("#contextLine"),
+  matchCount: document.querySelector("#matchCount"),
+  resetButton: document.querySelector("#resetButton"),
+};
+
+function normalize(value) {
+  return String(value || "").trim().toLowerCase();
+}
+
+function resolveId(value) {
+  const raw = String(value || "").trim();
+  return state.aliasToId.get(raw) || state.aliasToId.get(normalize(raw)) || raw;
+}
+
+function nameOf(id) {
+  return state.shikigamiById.get(id)?.name || id;
+}
+
+function buildLabel(id) {
+  const build = state.buildsById.get(id);
+  if (!build) return id;
+  return `${nameOf(build.shikigami_id)} · ${build.label}`;
+}
+
+function formatNames(ids) {
+  return ids?.length ? ids.map(nameOf).join(" / ") : "无";
+}
+
+function unique(items) {
+  return [...new Set(items)];
+}
+
+function enemyBansFor(matchup) {
+  if (Array.isArray(matchup.enemy_bans)) return matchup.enemy_bans;
+  if (matchup.enemy_ban) return [matchup.enemy_ban];
+  return [];
+}
+
+function includesAll(selected, required = []) {
+  return required.every((item) => selected.has(item));
+}
+
+function intersects(selected, candidates = []) {
+  return candidates.some((item) => selected.has(item));
+}
+
+function systemScore(system, enemyPicks) {
+  let score = Number(system.initial_score || 0);
+  const confirmHits = system.confirm_picks?.filter((id) => enemyPicks.has(id)) || [];
+  const fuzzyHits = system.fuzzy_picks?.filter((id) => enemyPicks.has(id)) || [];
+  const excludedHits = system.excluded_picks?.filter((id) => enemyPicks.has(id)) || [];
+  score += confirmHits.length * 50;
+  score += fuzzyHits.length * 15;
+  score -= excludedHits.length * 80;
+  return { score, confirmHits, fuzzyHits, excludedHits };
+}
+
+function lineupMatches(lineup, enemyPicks) {
+  if (lineup.enemy_opening && !includesAll(enemyPicks, lineup.enemy_opening)) return false;
+  if (lineup.enemy_opening_contains && !includesAll(enemyPicks, lineup.enemy_opening_contains)) return false;
+  return true;
+}
+
+function matchingBranches(lineup, enemyPicks, enemyPickOrder) {
+  return (lineup.fifth_pick_branches || []).filter((branch) => {
+    if (branch.enemy_picks_contains && !includesAll(enemyPicks, branch.enemy_picks_contains)) return false;
+    if (branch.enemy_picks_excludes && intersects(enemyPicks, branch.enemy_picks_excludes)) return false;
+    if (branch.enemy_pick_at) {
+      return Object.entries(branch.enemy_pick_at).every(([slot, expected]) => {
+        return enemyPickOrder[Number(slot) - 1] === expected;
+      });
+    }
+    return true;
+  });
+}
+
+function createOption(item) {
+  const option = document.createElement("option");
+  option.value = item.id;
+  option.textContent = item.name;
+  return option;
+}
+
+function renderSelects() {
+  const sorted = [...state.shikigami].sort((a, b) => a.name.localeCompare(b.name, "zh-Hans-CN"));
+  els.ourBanSelect.replaceChildren(...sorted.map(createOption));
+  els.enemyBanSelect.replaceChildren(createOption({ id: "", name: "请选择" }), ...sorted.map(createOption));
+  els.ourBanSelect.value = state.ourBan;
+  els.enemyBanSelect.value = state.enemyBan;
+}
+
+function renderPicked() {
+  if (!state.enemyPicks.length) {
+    const empty = document.createElement("span");
+    empty.className = "empty-inline";
+    empty.textContent = "还没有添加敌方式神";
+    els.enemyPickedList.replaceChildren(empty);
+    return;
+  }
+
+  const nodes = state.enemyPicks.map((id, index) => {
+    const pill = document.createElement("span");
+    pill.className = "pill";
+    pill.textContent = `${index + 1}. ${nameOf(id)}`;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.title = `移除 ${nameOf(id)}`;
+    button.textContent = "×";
+    button.addEventListener("click", () => {
+      state.enemyPicks.splice(index, 1);
+      render();
+    });
+    pill.append(button);
+    return pill;
+  });
+  els.enemyPickedList.replaceChildren(...nodes);
+}
+
+function addEnemyPick(id) {
+  if (!id || state.enemyPicks.includes(id)) return;
+  state.enemyPicks.push(id);
+  state.query = "";
+  els.shikigamiSearch.value = "";
+  render();
+}
+
+function renderQuickPicks() {
+  const query = normalize(state.query);
+  const filtered = state.shikigami
+    .filter((item) => {
+      if (!query) return true;
+      const haystack = [item.id, item.name, ...(item.aliases || [])].map(normalize).join(" ");
+      return haystack.includes(query);
+    })
+    .sort((a, b) => a.name.localeCompare(b.name, "zh-Hans-CN"))
+    .slice(0, 60);
+
+  const nodes = filtered.map((item) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "pick-button";
+    button.textContent = item.name;
+    button.disabled = state.enemyPicks.includes(item.id);
+    button.addEventListener("click", () => addEnemyPick(item.id));
+    return button;
+  });
+  els.quickPickGrid.replaceChildren(...nodes);
+}
+
+function renderDefaultRecommendation(defaultRec) {
+  if (!defaultRec) return null;
+  const box = document.createElement("div");
+  box.className = "lineup";
+  box.innerHTML = `
+    <div class="lineup-title">
+      <h3>${defaultRec.name}</h3>
+      <span class="tag">默认起手</span>
+    </div>
+    <p><span class="label">先选</span> ${formatNames(defaultRec.first_picks || [])}</p>
+    ${defaultRec.first_builds?.length ? `<p><span class="label">配置</span> ${defaultRec.first_builds.map(buildLabel).join(" / ")}</p>` : ""}
+    <p>${defaultRec.reason || ""}</p>
+  `;
+  return box;
+}
+
+function renderLineup(lineup, enemyPicks, enemyPickOrder) {
+  const box = document.createElement("div");
+  box.className = "lineup";
+
+  const tags = [...(lineup.style || []), lineup.risk_level ? `风险${lineup.risk_level}` : "", lineup.difficulty ? `难度${lineup.difficulty}` : ""]
+    .filter(Boolean)
+    .map((tag) => `<span class="tag">${tag}</span>`)
+    .join("");
+
+  const branches = matchingBranches(lineup, enemyPicks, enemyPickOrder);
+  const branchHtml = branches.length
+    ? `<div class="branch-list">${branches
+        .map(
+          (branch) => `
+            <div class="branch">
+              <p><span class="label">分支</span> ${formatNames(branch.next_picks || [])}</p>
+              <p>${branch.reason || ""}</p>
+            </div>
+          `,
+        )
+        .join("")}</div>`
+    : "";
+
+  const fifthOptions = lineup.fifth_options?.length
+    ? `<p><span class="label">5手可选</span> ${formatNames(lineup.fifth_options)}</p>`
+    : "";
+
+  const slotHtml = lineup.lineup_slots?.length
+    ? lineup.lineup_slots
+        .map(
+          (slot) => `
+            <p><span class="label">${slot.slot}手可选</span> ${formatNames(slot.options || [])}</p>
+            ${slot.note ? `<p>${slot.note}</p>` : ""}
+          `,
+        )
+        .join("")
+    : "";
+
+  box.innerHTML = `
+    <div class="lineup-title">
+      <h3>${lineup.name}</h3>
+      ${tags}
+    </div>
+    <p><span class="label">阵容</span> ${formatNames(lineup.picks || [])}</p>
+    ${lineup.builds?.length ? `<p><span class="label">配置</span> ${lineup.builds.map(buildLabel).join(" / ")}</p>` : ""}
+    ${fifthOptions}
+    ${slotHtml}
+    <p>${lineup.reason || ""}</p>
+    ${branchHtml}
+  `;
+  return box;
+}
+
+function renderSystem(system, scoreData, enemyPicks, enemyPickOrder) {
+  const box = document.createElement("div");
+  box.className = "system";
+
+  const signal = scoreData.confirmHits.length
+    ? `确认信号：${formatNames(scoreData.confirmHits)}`
+    : scoreData.fuzzyHits.length
+      ? `模糊信号：${formatNames(scoreData.fuzzyHits)}`
+      : enemyPicks.size
+        ? "还未命中明确信号"
+        : "只根据 ban 位预测";
+
+  const lineups = (system.recommended_lineups || []).filter((lineup) => !enemyPicks.size || lineupMatches(lineup, enemyPicks));
+
+  const children = [
+    htmlToNode(`
+      <div class="system-title">
+        <div>
+          <h3>${system.name}</h3>
+          <p>${signal}</p>
+        </div>
+        <span class="score">${scoreData.score}</span>
+      </div>
+    `),
+  ];
+
+  if (system.notes) {
+    children.push(htmlToNode(`<p>${system.notes}</p>`));
+  }
+
+  if (lineups.length) {
+    children.push(...lineups.map((lineup) => renderLineup(lineup, enemyPicks, enemyPickOrder)));
+  } else {
+    children.push(htmlToNode(`<div class="empty-state">暂无完全命中的推荐阵容，继续观察对方后续选择。</div>`));
+  }
+
+  box.replaceChildren(...children);
+  return box;
+}
+
+function htmlToNode(html) {
+  const template = document.createElement("template");
+  template.innerHTML = html.trim();
+  return template.content.firstElementChild;
+}
+
+function getMatches() {
+  if (!state.strategy || !state.ourBan || !state.enemyBan) return [];
+  const enemyPickOrder = [...state.enemyPicks];
+  const enemyPicks = new Set(enemyPickOrder);
+
+  return (state.strategy.matchups || [])
+    .filter((matchup) => enemyBansFor(matchup).includes(state.enemyBan))
+    .map((matchup) => {
+      const systems = (matchup.enemy_systems || [])
+        .map((system) => {
+          const scoreData = systemScore(system, enemyPicks);
+          const hasCoreHit = intersects(enemyPicks, system.core_picks || []);
+          if (scoreData.excludedHits.length) return null;
+          if (enemyPicks.size && !scoreData.confirmHits.length && !scoreData.fuzzyHits.length && !hasCoreHit) return null;
+          if (scoreData.score <= 0) return null;
+          return { system, scoreData };
+        })
+        .filter(Boolean)
+        .sort((a, b) => b.scoreData.score - a.scoreData.score);
+      return { matchup, systems, enemyPicks, enemyPickOrder };
+    });
+}
+
+function renderResults() {
+  const matches = getMatches();
+  els.contextLine.textContent = `${nameOf(state.ourBan)} vs ${state.enemyBan ? nameOf(state.enemyBan) : "未选择"} · 敌方 ${state.enemyPicks.length} 手`;
+  els.matchCount.textContent = String(matches.length);
+
+  if (!state.enemyBan) {
+    els.results.replaceChildren(htmlToNode(`<div class="empty-state">先选择敌方 ban 位。</div>`));
+    return;
+  }
+
+  if (!matches.length) {
+    els.results.replaceChildren(htmlToNode(`<div class="empty-state">没有找到匹配策略包。</div>`));
+    return;
+  }
+
+  const nodes = matches.map(({ matchup, systems, enemyPicks, enemyPickOrder }) => {
+    const box = document.createElement("article");
+    box.className = "matchup";
+    const header = htmlToNode(`
+      <div class="matchup-header">
+        <div>
+          <h3>${matchup.title}</h3>
+          <p>${matchup.ambiguous_policy?.message || ""}</p>
+        </div>
+      </div>
+    `);
+
+    const children = [header];
+    const defaultNode = renderDefaultRecommendation(matchup.default_recommendation);
+    if (defaultNode) children.push(defaultNode);
+
+    if (systems.length) {
+      children.push(...systems.map(({ system, scoreData }) => renderSystem(system, scoreData, enemyPicks, enemyPickOrder)));
+    } else if (matchup.ambiguous_policy?.message) {
+      children.push(htmlToNode(`<div class="system"><div class="empty-state">${matchup.ambiguous_policy.message}</div></div>`));
+    }
+
+    box.replaceChildren(...children);
+    return box;
+  });
+
+  els.results.replaceChildren(...nodes);
+}
+
+function render() {
+  renderPicked();
+  renderQuickPicks();
+  renderResults();
+}
+
+function bindEvents() {
+  els.ourBanSelect.addEventListener("change", () => {
+    state.ourBan = els.ourBanSelect.value;
+    renderResults();
+  });
+
+  els.enemyBanSelect.addEventListener("change", () => {
+    state.enemyBan = els.enemyBanSelect.value;
+    renderResults();
+  });
+
+  els.shikigamiSearch.addEventListener("input", () => {
+    state.query = els.shikigamiSearch.value;
+    renderQuickPicks();
+  });
+
+  els.shikigamiSearch.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+    const id = resolveId(els.shikigamiSearch.value);
+    if (state.shikigamiById.has(id)) addEnemyPick(id);
+  });
+
+  els.resetButton.addEventListener("click", () => {
+    state.enemyPicks = [];
+    state.enemyBan = "";
+    state.query = "";
+    els.enemyBanSelect.value = "";
+    els.shikigamiSearch.value = "";
+    render();
+  });
+}
+
+async function init() {
+  const [shikigami, builds, strategy] = await Promise.all([
+    fetch("../data/shikigami.json").then((res) => res.json()),
+    fetch("../data/builds.json").then((res) => res.json()),
+    fetch(STRATEGY_PATH).then((res) => res.json()),
+  ]);
+
+  state.shikigami = shikigami;
+  state.builds = builds;
+  state.strategy = strategy;
+  state.shikigamiById = new Map(shikigami.map((item) => [item.id, item]));
+  state.buildsById = new Map(builds.map((item) => [item.id, item]));
+
+  for (const item of shikigami) {
+    for (const alias of [item.id, item.name, ...(item.aliases || [])]) {
+      state.aliasToId.set(alias, item.id);
+      state.aliasToId.set(normalize(alias), item.id);
+    }
+  }
+
+  renderSelects();
+  bindEvents();
+  render();
+}
+
+init().catch((error) => {
+  console.error(error);
+  els.results.replaceChildren(htmlToNode(`<div class="empty-state">加载数据失败：${error.message}</div>`));
+});

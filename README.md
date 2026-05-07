@@ -1,37 +1,114 @@
 # Onmyoji PVP Assistant
 
-这是一个给公会用的阴阳师 PVP 助手雏形。
+给公会使用的阴阳师 PVP 助手雏形。
 
-当前阶段先从 BP 推荐和御魂配置规则库开始，后续可以逐步扩展到阵容教学、版本策略管理、截图识别，以及战斗中操作建议。
+当前阶段聚焦 BP 推荐：根据双方 ban 位和敌方已选式神，预测对方可能体系，并展示我方推荐阵容、分支和理由。后续可以继续扩展到截图/OCR 识别、实时 BP 辅助、阵容教学和战斗中操作建议。
+
+## 当前功能
+
+- 式神字典：维护式神正式名、简称、英文名。
+- 御魂配置库：维护同一式神的多套配置。
+- 策略包：按版本、ban 位、体系、作者记录 BP 思路。
+- 命令行推荐器：输入 ban 位和敌方已选，输出推荐阵容。
+- 静态网页：手动点选 ban 位和敌方已选，实时显示推荐结果。
+- 数据校验：检查式神和配置引用是否有效。
 
 ## 目录
 
-- `data/heroes.json`: 角色字典，记录角色正式名、简称、英文名。
-- `data/builds.json`: 御魂配置库，记录同一个角色的不同配置。
+- `data/shikigami.json`: 式神字典。
+- `data/builds.json`: 御魂配置库。
 - `data/versions/2026-05/meta.json`: 版本说明。
-- `data/versions/2026-05/ban_magatsuhi/shijiamei/expert_a.json`: 某个版本、某个 ban 位、某个体系、某个高手的策略包。
+- `data/versions/2026-05/ban_magatsuhi/shijiamei/expert_a.json`: 策略包示例。
+- `docs/strategy_package_format.md`: 策略包格式说明。
 - `scripts/validate_data.py`: 数据校验脚本。
+- `scripts/recommend.py`: 命令行推荐器。
+- `web/`: 静态网页雏形。
 
-## 第一步先填什么
+## 运行网页
 
-先填 `data/heroes.json`。
+在项目根目录启动本地服务器：
 
-目标不是一次填完所有角色，而是先把攻略里出现的角色放进去。重点是 `aliases`，也就是高手攻略里可能出现的简称。
+```bash
+python3 -m http.server 8000
+```
+
+然后打开：
+
+```text
+http://127.0.0.1:8000/web/
+```
+
+网页会读取 `data/` 里的 JSON 数据。
+
+## 命令行推荐
 
 示例：
 
+```bash
+python3 scripts/recommend.py --our-ban 祸 --enemy-ban 禅 --enemy-picks 离 封 骷髅 言
+```
+
+另一个示例：
+
+```bash
+python3 scripts/recommend.py --our-ban 祸 --enemy-ban 阎魔 --enemy-picks 因幡 面 龙珏
+```
+
+输入可以用式神 `id`、正式名或 `aliases` 里的简称。
+
+## 数据校验
+
+每次修改式神字典、御魂配置或策略包后，建议运行：
+
+```bash
+python3 scripts/validate_data.py
+```
+
+当前校验会检查：
+
+- `shikigami.json` 的字段、重复 id/name/aliases。
+- `builds.json` 的字段、重复 id。
+- `builds.json` 里的 `shikigami_id` 是否存在于 `shikigami.json`。
+
+## 填写规则
+
+### 式神字典
+
 ```json
 {
-  "id": "sp_hoshiguma",
+  "id": "sphoshiguma",
   "name": "SP星熊童子",
-  "aliases": ["熊", "星熊", "SP熊", "sp熊"],
+  "aliases": ["SP星熊童子", "SP熊", "sp熊"],
   "type": "SP"
 }
 ```
 
-## 填写原则
+- `id`: 稳定唯一编号，建议小写英文、数字、下划线。
+- `name`: 式神正式名。
+- `aliases`: 攻略里可能出现的简称，尽量避免不同式神重复。
 
-- `id` 用英文或拼音，创建后尽量不要改。
-- `name` 用角色正式中文名。
-- `aliases` 放所有常见简称。
-- 暂时不确定的字段可以先留空，后面再补。
+### 御魂配置
+
+```json
+{
+  "id": "sp_hoshiguma_jizo_hp_hit_hp",
+  "shikigami_id": "sphoshiguma",
+  "label": "地藏 生/命/生",
+  "soul": "地藏像",
+  "stats": ["生命", "效果命中", "生命"],
+  "tags": ["抗速攻", "防爆发", "挖土对策"],
+  "use_case": "专门应对一速加爆发输出的挖土阵容"
+}
+```
+
+- `shikigami_id`: 必须对应 `data/shikigami.json` 里的式神 `id`。
+- `stats`: 按 2/4/6 号位填写。
+- `tags`: 可重复，用于分类和筛选。
+- `use_case`: 给玩家看的使用场景。
+
+## 下一步方向
+
+- 补充更多 ban 位和高手策略包。
+- 给网页增加我方已选、个人式神池和配置池。
+- 增加策略包引用校验。
+- 接入截图/OCR 识别，自动填充双方 ban 和敌方已选。

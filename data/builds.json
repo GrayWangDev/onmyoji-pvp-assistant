@@ -1,7 +1,7 @@
 [
   {
     "id": "sp_hoshiguma_kyosen_spd_hit_hp",
-    "hero_id": "sphoshiguma",
+    "shikigami_id": "sphoshiguma",
     "label": "共潜 速/命/生",
     "soul": "共潜",
     "stats": ["速度", "效果命中", "生命"],
@@ -10,7 +10,7 @@
   },
   {
     "id": "sp_hoshiguma_jizo_hp_hit_hp",
-    "hero_id": "sphoshiguma",
+    "shikigami_id": "sphoshiguma",
     "label": "地藏 生/命/生",
     "soul": "地藏像",
     "stats": ["生命", "效果命中", "生命"],
@@ -19,7 +19,7 @@
   },
   {
     "id": "kuzunoha_default",
-    "hero_id": "kuzunoha",
+    "shikigami_id": "kuzunoha",
     "label": "常规葛叶",
     "soul": "",
     "stats": ["速度", "攻击/生命", "攻击/生命"],
@@ -28,7 +28,7 @@
   },
   {
     "id": "ssr_taishakuten_oil_spd_hit_hp",
-    "hero_id": "taishakuten",
+    "shikigami_id": "taishakuten",
     "label": "油赤子 速/命/生",
     "soul": "油赤子",
     "stats": ["速度", "效果命中", "生命"],
@@ -37,7 +37,7 @@
   },
   {
     "id": "ssr_taishakuten_azure_spd_hit_hp",
-    "hero_id": "taishakuten",
+    "shikigami_id": "taishakuten",
     "label": "火灵 速/命/生",
     "soul": "火灵",
     "stats": ["速度", "效果命中", "生命"],
@@ -46,7 +46,7 @@
   },
   {
     "id": "ssr_susanoo_wq_atk_atk_crit",
-    "hero_id": "susanoo",
+    "shikigami_id": "susanoo",
     "label": "须佐 攻/攻/暴",
     "soul": "网切",
     "stats": ["攻击", "攻击", "暴伤"],
@@ -55,7 +55,7 @@
   },
   {
     "id": "ssr_susanoo_seductress_spd_atk_crit",
-    "hero_id": "susanoo",
+    "shikigami_id": "susanoo",
     "label": "快须佐 速/攻/暴",
     "soul": "针女",
     "stats": ["速度", "攻击", "暴伤"],
@@ -64,7 +64,7 @@
   },
   {
     "id": "ssr_susanoo_jizo_hp_atk_crit",
-    "hero_id": "susanoo",
+    "shikigami_id": "susanoo",
     "label": "肉地藏须佐 生/攻/暴",
     "soul": "地藏",
     "stats": ["攻击/生命", "攻击/生命", "暴击/暴伤"],
@@ -73,7 +73,7 @@
   },
   {
     "id": "ssr_kohaku_default",
-    "hero_id": "kohaku",
+    "shikigami_id": "kohaku",
     "label": "小白 速/生/攻",
     "soul": "",
     "stats": ["速度", "攻击/生命", "攻击/生命"],
@@ -82,7 +82,7 @@
   },
   {
     "id": "ssr_kohaku_haitu",
-    "hero_id": "kohaku",
+    "shikigami_id": "kohaku",
     "label": "小白 速/生/攻",
     "soul": "奉海图",
     "stats": ["速度", "攻击/生命", "攻击/生命"],
@@ -91,7 +91,7 @@
   },
   {
     "id": "ssr_kohaku_seaspirit",
-    "hero_id": "kohaku",
+    "shikigami_id": "kohaku",
     "label": "小白 速/生/攻",
     "soul": "蚌精",
     "stats": ["速度", "攻击/生命", "攻击/生命"],
@@ -100,7 +100,7 @@
   },
   {
     "id": "sp_kohaku_seaspirit",
-    "hero_id": "spkohaku",
+    "shikigami_id": "spkohaku",
     "label": "sp白 生/生/暴",
     "soul": "蚌精",
     "stats": ["生命", "生命", "暴击/暴伤"],
@@ -109,7 +109,7 @@
   },
   {
     "id": "ssr_taira_souledge",
-    "hero_id": "taira",
+    "shikigami_id": "taira",
     "label": "平 攻/防/暴",
     "soul": "薙魂",
     "stats": ["攻击/防御", "攻击/防御", "暴击/暴伤"],
@@ -118,7 +118,7 @@
   },
   {
     "id": "sr_hako_seaspirit",
-    "hero_id": "hako",
+    "shikigami_id": "hako",
     "label": "匣子 生/生/暴",
     "soul": "蚌精",
     "stats": ["生命", "生命", "暴击/暴伤"],
@@ -127,7 +127,7 @@
   },
   {
     "id": "sr_hoshi_seaspirit",
-    "hero_id": "srhoshi",
+    "shikigami_id": "srhoshi",
     "label": "星熊 速/命/生",
     "soul": "蚌精",
     "stats": ["速度", "效果命中", "生命"],
@@ -136,7 +136,7 @@
   },
   {
     "id": "sr_hoshi_nianhuo",
-    "hero_id": "srhoshi",
+    "shikigami_id": "srhoshi",
     "label": "星熊 速/命/生",
     "soul": "遗念火",
     "stats": ["速度", "效果命中", "生命"],
@@ -145,7 +145,7 @@
   },
   {
     "id": "sp_onikiri_souledge",
-    "hero_id": "sponikiri",
+    "shikigami_id": "sponikiri",
     "label": "奶切 速/攻/生",
     "soul": "薙魂",
     "stats": ["速度", "攻击/生命", "攻击/生命"],
@@ -154,7 +154,7 @@
   },
   {
     "id": "sp_onikiri_gongqian",
-    "hero_id": "sponikiri",
+    "shikigami_id": "sponikiri",
     "label": "奶切 速/攻/生",
     "soul": "共潜",
     "stats": ["速度", "攻击/生命", "攻击/生命"],
@@ -163,7 +163,7 @@
   },
   {
     "id": "sp_mio",
-    "hero_id": "spmio",
+    "shikigami_id": "spmio",
     "label": "狐狸 攻/攻/暴",
     "soul": "片叶",
     "stats": ["攻击", "攻击", "暴伤"],
@@ -172,7 +172,7 @@
   },
   {
     "id": "ssr_kotodama_zhongling",
-    "hero_id": "kotodama",
+    "shikigami_id": "kotodama",
     "label": "言灵 速/命/生",
     "soul": "钟灵",
     "stats": ["速度", "效果命中", "生命"],
@@ -181,7 +181,7 @@
   },
   {
     "id": "sp_inugami",
-    "hero_id": "spinugami",
+    "shikigami_id": "spinugami",
     "label": "sp犬神 攻/命/暴",
     "soul": "魅妖",
     "stats": ["攻击", "效果命中", "暴击/暴伤"],
@@ -190,11 +190,163 @@
   },
   {
     "id": "ssr_fengyang",
-    "hero_id": "fengyang",
+    "shikigami_id": "fengyang",
     "label": "封阳君 速/命/生",
     "soul": "钟灵",
     "stats": ["速度", "效果命中", "生命"],
     "tags": ["打火山","神封"],
     "use_case": "神封打火山好用"
+  },{
+    "id": "ssr_enma",
+    "shikigami_id": "enma",
+    "label": "阎魔 速/命/生",
+    "soul": "火灵",
+    "stats": ["速度", "效果命中", "生命"],
+    "tags": ["抢速","先手"],
+    "use_case": "ban葛直接阎魔初音开"
+  },
+  {
+    "id": "sp_ungaikyo_souledge_spd_hp_atk",
+    "shikigami_id": "spungaikyo",
+    "label": "禅镜 速/生/攻",
+    "soul": "薙魂",
+    "stats": ["速度", "攻击/生命", "攻击/生命"],
+    "tags": ["ban葛","配骷髅"],
+    "use_case": "ban葛千音对上禅吞骷可以上阎音千骷禅"
+  },
+  {
+    "id": "ssr_odokuro_yinnian_spd_hp_hp",
+    "shikigami_id": "odokuro",
+    "label": "荒骷髅 速/生/生",
+    "soul": "隐念",
+    "stats": ["速度", "生命", "生命"],
+    "tags": ["防离队","防挖"],
+    "use_case": "葛队打离队可以上骷髅"
+  },
+  {
+    "id": "sp_shuten_oil",
+    "shikigami_id": "spshutendoji",
+    "label": "鬼吞 速/生/生",
+    "soul": "油赤子",
+    "stats": ["速度", "生命", "生命"],
+    "tags": ["打离队"],
+    "use_case": "葛队打离队可以葛吞骷切"
+  },
+  {
+    "id": "ssr_suzikagozen_fc",
+    "shikigami_id": "suzukagozen",
+    "label": "铃鹿 速/生/生",
+    "soul": "招财",
+    "stats": ["速度", "生命", "生命"],
+    "tags": ["打禅队"],
+    "use_case": "葛队打禅队可以葛帝须06"
+  },
+  {
+    "id": "ssr_shinigami_gongqian",
+    "shikigami_id": "shinigami",
+    "label": "市加美 速/生/暴",
+    "soul": "共潜",
+    "stats": ["速度", "生命", "暴击/暴伤"],
+    "tags": ["ban葛","打火山"],
+    "use_case": "ban葛对上火山可以上阎音神封市"
+  },
+  {
+    "id": "sp_enmusubi_fc",
+    "shikigami_id": "spenmusubi",
+    "label": "大缘 速/生/生",
+    "soul": "招财",
+    "stats": ["速度", "生命", "生命"],
+    "tags": ["ban葛","防推条"],
+    "use_case": "ban葛千音对上千连熊可以上"
+  },
+  {
+    "id": "sp_susabi_shanghun",
+    "shikigami_id": "susabi",
+    "label": "荒 攻/攻/暴",
+    "soul": "伤魂鸟",
+    "stats": ["攻击", "攻击", "暴伤"],
+    "tags": ["摆烂"],
+    "use_case": "摆了"
+  },
+  {
+    "id": "ssr_kanazuki_gongqian",
+    "shikigami_id": "kannazuki",
+    "label": "神无月 速/生/生",
+    "soul": "共潜",
+    "stats": ["速度", "生命", "生命"],
+    "tags": ["ban葛","打火山"],
+    "use_case": "ban葛打火山可以上神封神言"
+  },
+  {
+    "id": "ssr_tsukuyomi_gongqian",
+    "shikigami_id": "tsukuyomi",
+    "label": "月读 速/生/生",
+    "soul": "共潜",
+    "stats": ["速度", "生命", "生命"],
+    "tags": ["防离草","防单控"],
+    "use_case": "防单体控和离草"
+  },
+  {
+    "id": "ssr_ungaikyo_gongqian",
+    "shikigami_id": "ungaikyo",
+    "label": "镜子 速/防/防",
+    "soul": "共潜",
+    "stats": ["速度", "防御", "防御"],
+    "tags": ["驱散"],
+    "use_case": "控多上镜子"
+  },
+  {
+    "id": "sp_enma",
+    "shikigami_id": "spyamalordenma",
+    "label": "摩托 速/命/生",
+    "soul": "",
+    "stats": ["速度", "效果命中", "生命"],
+    "tags": ["抢速","防挖"],
+    "use_case": "防挖可以配合2x连"
+  },
+  {
+    "id": "sp_shishiro_fc",
+    "shikigami_id": "spshishiro",
+    "label": "小鹿 速/生/生",
+    "soul": "招财",
+    "stats": ["速度", "生命", "生命"],
+    "tags": ["打荒"],
+    "use_case": "对荒宝具"
+  },
+  {
+    "id": "ssr_shiki_meiyao",
+    "shikigami_id": "shiki",
+    "label": "季 速/命/暴",
+    "soul": "魅妖",
+    "stats": ["速度", "效果命中", "暴伤"],
+    "tags": ["抢速", "葛内战"],
+    "use_case": "葛帝须白内战5手常用卡"
+  },
+  {
+    "id": "sp_yukionna_seaspirit",
+    "shikigami_id": "spyukionna",
+    "label": "雪女 速/生/暴",
+    "soul": "蚌精",
+    "stats": ["速度", "生命", "暴击/暴伤"],
+    "tags": ["克言灵"],
+    "use_case": "打言灵可以上sp雪锁言"
+  },
+  {
+    "id": "sp_momo_seaspirit",
+    "shikigami_id": "spmomo",
+    "label": "桃花 速/生/暴",
+    "soul": "蚌精",
+    "stats": ["速度", "生命", "暴击/暴伤"],
+    "tags": ["防挖","葛内战"],
+    "use_case": "葛帝须白内战5手常用卡"
+  },
+  {
+    "id": "ssr_ichi_dinger_2x",
+    "shikigami_id": "ssrichi",
+    "label": "一目连 速/防/防",
+    "soul": "吊瓶火",
+    "stats": ["速度", "防御", "防御"],
+    "tags": ["克面"],
+    "use_case": "葛队打面挖土翻葛帝骷摩连"
   }
 ]

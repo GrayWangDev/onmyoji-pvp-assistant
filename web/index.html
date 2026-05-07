@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Onmyoji PVP Assistant</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="control-panel" aria-label="BP 输入">
+        <div class="panel-header">
+          <div>
+            <h1>Onmyoji PVP Assistant</h1>
+            <p>2026-05 · ban祸津神 · 市加美版本</p>
+          </div>
+          <button id="resetButton" class="icon-button" type="button" title="重置">
+            ↺
+          </button>
+        </div>
+
+        <div class="field-grid">
+          <label class="field">
+            <span>我方 ban</span>
+            <select id="ourBanSelect"></select>
+          </label>
+          <label class="field">
+            <span>敌方 ban</span>
+            <select id="enemyBanSelect"></select>
+          </label>
+        </div>
+
+        <div class="selected-strip">
+          <div class="strip-title">敌方已选</div>
+          <div id="enemyPickedList" class="picked-list"></div>
+        </div>
+
+        <label class="field search-field">
+          <span>添加敌方式神</span>
+          <input id="shikigamiSearch" type="search" placeholder="输入简称，例如 离、封、骷髅、面" />
+        </label>
+
+        <div id="quickPickGrid" class="quick-pick-grid" aria-label="式神选择"></div>
+      </section>
+
+      <section class="result-panel" aria-label="推荐结果">
+        <div class="result-toolbar">
+          <div>
+            <h2>推荐结果</h2>
+            <p id="contextLine"></p>
+          </div>
+          <span id="matchCount" class="count-badge"></span>
+        </div>
+
+        <div id="results" class="results"></div>
+      </section>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
