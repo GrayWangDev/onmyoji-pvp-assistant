@@ -40,6 +40,28 @@ http://127.0.0.1:8000/web/
 
 网页会读取 `data/` 里的 JSON 数据。
 
+## GitHub Pages 部署
+
+仓库包含 GitHub Pages workflow：
+
+```text
+.github/workflows/pages.yml
+```
+
+推送到 `main` 后，GitHub Actions 会发布静态页面。第一次使用时，需要在 GitHub 仓库里确认 Pages 设置：
+
+```text
+Settings -> Pages -> Build and deployment -> Source -> GitHub Actions
+```
+
+部署完成后访问：
+
+```text
+https://graywangdev.github.io/onmyoji-pvp-assistant/
+```
+
+根页面会自动跳转到 `web/`。
+
 ## 命令行推荐
 
 示例：
