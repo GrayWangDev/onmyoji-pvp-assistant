@@ -19,6 +19,7 @@ const state = {
       label: "我方名字牌",
       side: "our",
       regions: [
+        { x: 0.17, y: 0.25, w: 0.07, h: 0.18, label: "我方中文竖牌" },
         { x: 0.10, y: 0.30, w: 0.28, h: 0.12, label: "我方桌面名字牌" },
         { x: 0.07, y: 0.23, w: 0.40, h: 0.25, label: "我方大范围" },
       ],
@@ -27,6 +28,7 @@ const state = {
       label: "敌方名字牌",
       side: "enemy",
       regions: [
+        { x: 0.49, y: 0.25, w: 0.07, h: 0.18, label: "敌方中文竖牌" },
         { x: 0.49, y: 0.30, w: 0.30, h: 0.12, label: "敌方桌面名字牌" },
         { x: 0.48, y: 0.23, w: 0.42, h: 0.25, label: "敌方大范围" },
       ],
@@ -304,6 +306,26 @@ function rotateCanvas(source, degrees) {
   return canvas;
 }
 
+function preprocessCanvas(source) {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = source.width;
+  canvas.height = source.height;
+  ctx.drawImage(source, 0, 0);
+
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const data = imageData.data;
+  for (let i = 0; i < data.length; i += 4) {
+    const gray = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114;
+    const value = gray > 150 ? 255 : 0;
+    data[i] = value;
+    data[i + 1] = value;
+    data[i + 2] = value;
+  }
+  ctx.putImageData(imageData, 0, 0);
+  return canvas;
+}
+
 function truncateText(text, maxLength = 72) {
   if (!text) return "无文本";
   return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
@@ -357,14 +379,21 @@ async function recognizeRegion(regionKey) {
     const attempts = [];
     for (const region of group.regions) {
       const crop = cropRegion(region);
-      for (const rotation of [0, 90, -90]) {
-        const image = rotateCanvas(crop, rotation);
-        const result = await window.Tesseract.recognize(image, OCR_LANGUAGES);
-        const text = result.data.text.replace(/\s+/g, " ").trim();
-        const id = resolveOcrText(text);
-        const confidence = result.data.confidence || 0;
-        attempts.push({ region, rotation, text, id, confidence });
-        if (id) break;
+      const variants = [
+        { name: "原图", canvas: crop },
+        { name: "二值化", canvas: preprocessCanvas(crop) },
+      ];
+      for (const variant of variants) {
+        for (const rotation of [0, 90, -90]) {
+          const image = rotateCanvas(variant.canvas, rotation);
+          const result = await window.Tesseract.recognize(image, OCR_LANGUAGES);
+          const text = result.data.text.replace(/\s+/g, " ").trim();
+          const id = resolveOcrText(text);
+          const confidence = result.data.confidence || 0;
+          attempts.push({ region, variant: variant.name, rotation, text, id, confidence });
+          if (id) break;
+        }
+        if (attempts.some((attempt) => attempt.id)) break;
       }
       if (attempts.some((attempt) => attempt.id)) break;
     }
@@ -374,8 +403,9 @@ async function recognizeRegion(regionKey) {
     const text = best?.text || "";
     const id = best?.id || "";
     const rotationNote = best?.rotation ? `，旋转${best.rotation}°` : "";
+    const variantNote = best?.variant && best.variant !== "原图" ? `，${best.variant}` : "";
     els.ocrStatus.textContent = id ? `识别到 ${nameOf(id)}。` : "OCR 完成，但没有匹配到式神；可以继续手动输入。";
-    renderOcrCandidate({ regionLabel: `${best?.region.label || group.label}${rotationNote}`, text, id, side: group.side });
+    renderOcrCandidate({ regionLabel: `${best?.region.label || group.label}${rotationNote}${variantNote}`, text, id, side: group.side });
   } catch (error) {
     console.error(error);
     els.ocrStatus.textContent = `识别失败：${error.message}`;
