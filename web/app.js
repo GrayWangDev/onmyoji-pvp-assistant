@@ -17,15 +17,15 @@ const state = {
     left: {
       label: "左侧名字牌",
       regions: [
-        { x: 0.07, y: 0.23, w: 0.40, h: 0.25, label: "左侧大范围" },
         { x: 0.10, y: 0.30, w: 0.28, h: 0.12, label: "左侧桌面名字牌" },
+        { x: 0.07, y: 0.23, w: 0.40, h: 0.25, label: "左侧大范围" },
       ],
     },
     right: {
       label: "右侧名字牌",
       regions: [
-        { x: 0.48, y: 0.23, w: 0.42, h: 0.25, label: "右侧大范围" },
         { x: 0.49, y: 0.30, w: 0.30, h: 0.12, label: "右侧桌面名字牌" },
+        { x: 0.48, y: 0.23, w: 0.42, h: 0.25, label: "右侧大范围" },
       ],
     },
   },
@@ -285,6 +285,11 @@ function cropRegion(region) {
   return canvas;
 }
 
+function truncateText(text, maxLength = 72) {
+  if (!text) return "无文本";
+  return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+}
+
 function renderOcrCandidate({ regionLabel, text, id }) {
   const row = document.createElement("div");
   row.className = "ocr-result";
@@ -293,7 +298,8 @@ function renderOcrCandidate({ regionLabel, text, id }) {
   const title = document.createElement("strong");
   title.textContent = id ? `${regionLabel}: ${nameOf(id)}` : `${regionLabel}: 未匹配`;
   const raw = document.createElement("p");
-  raw.textContent = `OCR: ${text || "无文本"}`;
+  raw.textContent = id ? `命中：${nameOf(id)} · OCR: ${truncateText(text)}` : `OCR: ${truncateText(text)}`;
+  raw.title = text || "";
   detail.append(title, raw);
 
   const button = document.createElement("button");
