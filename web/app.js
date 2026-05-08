@@ -1,5 +1,6 @@
 const VERSION = "2026-05";
 const STRATEGY_PATH = "../data/versions/2026-05/ban_magatsuhi/shijiamei/expert_a.json";
+const OCR_LANGUAGES = "eng+chi_sim";
 
 const state = {
   shikigami: [],
@@ -287,6 +288,22 @@ function cropRegion(region) {
   return canvas;
 }
 
+function rotateCanvas(source, degrees) {
+  if (!degrees) return source;
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  const radians = (degrees * Math.PI) / 180;
+  const rightAngle = Math.abs(degrees) % 180 === 90;
+  canvas.width = rightAngle ? source.height : source.width;
+  canvas.height = rightAngle ? source.width : source.height;
+
+  ctx.translate(canvas.width / 2, canvas.height / 2);
+  ctx.rotate(radians);
+  ctx.drawImage(source, -source.width / 2, -source.height / 2);
+  return canvas;
+}
+
 function truncateText(text, maxLength = 72) {
   if (!text) return "无文本";
   return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
@@ -334,26 +351,31 @@ async function recognizeRegion(regionKey) {
 
   const group = state.ocrRegionGroups[regionKey];
   drawScreenshotPreview(regionKey);
-  els.ocrStatus.textContent = `正在识别${group.label}...`;
+  els.ocrStatus.textContent = `正在识别${group.label}，中英 OCR 可能需要几秒...`;
 
   try {
     const attempts = [];
     for (const region of group.regions) {
       const crop = cropRegion(region);
-      const result = await window.Tesseract.recognize(crop, "eng");
-      const text = result.data.text.replace(/\s+/g, " ").trim();
-      const id = resolveOcrText(text);
-      const confidence = result.data.confidence || 0;
-      attempts.push({ region, text, id, confidence });
-      if (id) break;
+      for (const rotation of [0, 90, -90]) {
+        const image = rotateCanvas(crop, rotation);
+        const result = await window.Tesseract.recognize(image, OCR_LANGUAGES);
+        const text = result.data.text.replace(/\s+/g, " ").trim();
+        const id = resolveOcrText(text);
+        const confidence = result.data.confidence || 0;
+        attempts.push({ region, rotation, text, id, confidence });
+        if (id) break;
+      }
+      if (attempts.some((attempt) => attempt.id)) break;
     }
 
     const matched = attempts.find((attempt) => attempt.id);
     const best = matched || attempts.sort((a, b) => b.confidence - a.confidence)[0];
     const text = best?.text || "";
     const id = best?.id || "";
+    const rotationNote = best?.rotation ? `，旋转${best.rotation}°` : "";
     els.ocrStatus.textContent = id ? `识别到 ${nameOf(id)}。` : "OCR 完成，但没有匹配到式神；可以继续手动输入。";
-    renderOcrCandidate({ regionLabel: best?.region.label || group.label, text, id, side: group.side });
+    renderOcrCandidate({ regionLabel: `${best?.region.label || group.label}${rotationNote}`, text, id, side: group.side });
   } catch (error) {
     console.error(error);
     els.ocrStatus.textContent = `识别失败：${error.message}`;
@@ -595,7 +617,7 @@ function bindEvents() {
       URL.revokeObjectURL(image.src);
       state.screenshotImage = image;
       els.ocrResults.replaceChildren();
-      els.ocrStatus.textContent = "截图已加载。左侧是我方展示，右侧是敌方展示；当前 OCR 只识别中间名字牌。";
+      els.ocrStatus.textContent = "截图已加载。左侧是我方展示，右侧是敌方展示；中文竖排会尝试旋转识别。";
       drawScreenshotPreview();
     };
     image.src = URL.createObjectURL(file);
