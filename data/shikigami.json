@@ -147,7 +147,7 @@
   {
     "id": "susabi",
     "name": "荒",
-    "aliases": ["荒", "sp荒"],
+    "aliases": ["荒", "sp荒", "Susabi", "Divine Prophet Susabi"],
     "type": "SP"
   },
   {
@@ -207,7 +207,7 @@
   {
     "id": "spshishiro",
     "name": "sp小鹿男",
-    "aliases": ["小鹿", "鹿"],
+    "aliases": ["小鹿", "鹿", "Shishio", "Shishiro", "Greenwarden Shishio"],
     "type": "SP"
   },
   {

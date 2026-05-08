@@ -68,10 +68,16 @@ function resolveOcrText(text) {
     if (id) return id;
   }
 
-  for (const item of state.shikigami) {
-    const names = [item.id, item.name, ...(item.aliases || [])];
-    if (names.some((name) => compact.toLowerCase().includes(String(name).toLowerCase()))) {
-      return item.id;
+  const haystack = compact.toLowerCase();
+  const fuzzyNames = state.shikigami
+    .flatMap((item) => [item.id, item.name, ...(item.aliases || [])].map((name) => ({ id: item.id, name: String(name) })))
+    .filter(({ name }) => name.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, "").length >= 5)
+    .sort((a, b) => b.name.length - a.name.length);
+
+  for (const { id, name } of fuzzyNames) {
+    const needle = name.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, "").toLowerCase();
+    if (needle && haystack.includes(needle)) {
+      return id;
     }
   }
 
