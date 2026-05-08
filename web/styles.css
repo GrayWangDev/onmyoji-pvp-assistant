@@ -217,6 +217,84 @@ input:focus {
   cursor: default;
 }
 
+.ocr-panel {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcfd;
+  padding: 10px;
+}
+
+.file-drop {
+  display: grid;
+  min-height: 42px;
+  place-items: center;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.file-drop:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.file-drop input {
+  display: none;
+}
+
+.screenshot-canvas {
+  display: none;
+  width: 100%;
+  max-height: 240px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  object-fit: contain;
+}
+
+.screenshot-canvas.is-visible {
+  display: block;
+}
+
+.ocr-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.ocr-status,
+.ocr-results {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.ocr-results {
+  display: grid;
+  gap: 6px;
+}
+
+.ocr-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 8px;
+}
+
+.ocr-result strong {
+  color: var(--text);
+}
+
 .count-badge {
   display: inline-flex;
   align-items: center;

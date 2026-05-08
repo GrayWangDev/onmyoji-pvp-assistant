@@ -41,6 +41,21 @@
         </label>
 
         <div id="quickPickGrid" class="quick-pick-grid" aria-label="式神选择"></div>
+
+        <section class="ocr-panel" aria-label="截图识别实验">
+          <div class="strip-title">截图识别实验</div>
+          <label class="file-drop">
+            <input id="screenshotInput" type="file" accept="image/*" />
+            <span>上传 BP 截图</span>
+          </label>
+          <canvas id="screenshotCanvas" class="screenshot-canvas"></canvas>
+          <div class="ocr-actions">
+            <button id="ocrLeftButton" class="pick-button" type="button">识别左侧名字牌</button>
+            <button id="ocrRightButton" class="pick-button" type="button">识别右侧名字牌</button>
+          </div>
+          <div id="ocrStatus" class="ocr-status">上传截图后，可先识别中间角色名字牌。当前为实验功能。</div>
+          <div id="ocrResults" class="ocr-results"></div>
+        </section>
       </section>
 
       <section class="result-panel" aria-label="推荐结果">
@@ -56,6 +71,7 @@
       </section>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script type="module" src="./app.js"></script>
   </body>
 </html>

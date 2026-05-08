@@ -12,6 +12,11 @@ const state = {
   enemyBan: "",
   enemyPicks: [],
   query: "",
+  screenshotImage: null,
+  ocrRegions: {
+    left: { x: 0.11, y: 0.32, w: 0.22, h: 0.08, label: "左侧名字牌" },
+    right: { x: 0.50, y: 0.32, w: 0.22, h: 0.08, label: "右侧名字牌" },
+  },
 };
 
 const els = {
@@ -24,6 +29,12 @@ const els = {
   contextLine: document.querySelector("#contextLine"),
   matchCount: document.querySelector("#matchCount"),
   resetButton: document.querySelector("#resetButton"),
+  screenshotInput: document.querySelector("#screenshotInput"),
+  screenshotCanvas: document.querySelector("#screenshotCanvas"),
+  ocrLeftButton: document.querySelector("#ocrLeftButton"),
+  ocrRightButton: document.querySelector("#ocrRightButton"),
+  ocrStatus: document.querySelector("#ocrStatus"),
+  ocrResults: document.querySelector("#ocrResults"),
 };
 
 function normalize(value) {
@@ -33,6 +44,26 @@ function normalize(value) {
 function resolveId(value) {
   const raw = String(value || "").trim();
   return state.aliasToId.get(raw) || state.aliasToId.get(normalize(raw)) || raw;
+}
+
+function resolveOcrText(text) {
+  const raw = String(text || "").trim();
+  const compact = raw.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, "");
+  const candidates = [raw, compact, raw.toLowerCase(), compact.toLowerCase()];
+
+  for (const candidate of candidates) {
+    const id = state.aliasToId.get(candidate);
+    if (id) return id;
+  }
+
+  for (const item of state.shikigami) {
+    const names = [item.id, item.name, ...(item.aliases || [])];
+    if (names.some((name) => compact.toLowerCase().includes(String(name).toLowerCase()))) {
+      return item.id;
+    }
+  }
+
+  return "";
 }
 
 function nameOf(id) {
@@ -185,6 +216,104 @@ function renderQuickPicks() {
     return button;
   });
   els.quickPickGrid.replaceChildren(...nodes);
+}
+
+function drawScreenshotPreview(activeRegionKey = "") {
+  if (!state.screenshotImage) return;
+
+  const canvas = els.screenshotCanvas;
+  const ctx = canvas.getContext("2d");
+  const image = state.screenshotImage;
+  const maxWidth = 760;
+  const scale = Math.min(1, maxWidth / image.naturalWidth);
+  canvas.width = Math.round(image.naturalWidth * scale);
+  canvas.height = Math.round(image.naturalHeight * scale);
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+  for (const [key, region] of Object.entries(state.ocrRegions)) {
+    const isActive = key === activeRegionKey;
+    ctx.save();
+    ctx.strokeStyle = isActive ? "#b42318" : "#2d6cdf";
+    ctx.lineWidth = isActive ? 3 : 2;
+    ctx.setLineDash(isActive ? [] : [6, 4]);
+    ctx.strokeRect(region.x * canvas.width, region.y * canvas.height, region.w * canvas.width, region.h * canvas.height);
+    ctx.restore();
+  }
+
+  canvas.classList.add("is-visible");
+}
+
+function cropRegion(regionKey) {
+  const image = state.screenshotImage;
+  const region = state.ocrRegions[regionKey];
+  if (!image || !region) return null;
+
+  const canvas = document.createElement("canvas");
+  const padding = 0.01;
+  const sx = Math.max(0, (region.x - padding) * image.naturalWidth);
+  const sy = Math.max(0, (region.y - padding) * image.naturalHeight);
+  const sw = Math.min(image.naturalWidth - sx, (region.w + padding * 2) * image.naturalWidth);
+  const sh = Math.min(image.naturalHeight - sy, (region.h + padding * 2) * image.naturalHeight);
+  const scale = 3;
+  canvas.width = Math.round(sw * scale);
+  canvas.height = Math.round(sh * scale);
+
+  const ctx = canvas.getContext("2d");
+  ctx.imageSmoothingEnabled = true;
+  ctx.drawImage(image, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+  return canvas;
+}
+
+function renderOcrCandidate({ regionLabel, text, id }) {
+  const row = document.createElement("div");
+  row.className = "ocr-result";
+
+  const detail = document.createElement("div");
+  const title = document.createElement("strong");
+  title.textContent = id ? `${regionLabel}: ${nameOf(id)}` : `${regionLabel}: 未匹配`;
+  const raw = document.createElement("p");
+  raw.textContent = `OCR: ${text || "无文本"}`;
+  detail.append(title, raw);
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "pick-button";
+  button.textContent = id ? "加入" : "手动";
+  button.disabled = !id || isBanned(id) || state.enemyPicks.includes(id);
+  button.addEventListener("click", () => addEnemyPick(id));
+
+  row.append(detail, button);
+  els.ocrResults.prepend(row);
+}
+
+async function recognizeRegion(regionKey) {
+  if (!state.screenshotImage) {
+    els.ocrStatus.textContent = "请先上传一张 BP 截图。";
+    return;
+  }
+
+  if (!window.Tesseract) {
+    els.ocrStatus.textContent = "OCR 库加载失败，请检查网络后刷新页面。";
+    return;
+  }
+
+  const region = state.ocrRegions[regionKey];
+  drawScreenshotPreview(regionKey);
+  els.ocrStatus.textContent = `正在识别${region.label}...`;
+
+  try {
+    const crop = cropRegion(regionKey);
+    const result = await window.Tesseract.recognize(crop, "eng");
+    const text = result.data.text.replace(/\s+/g, " ").trim();
+    const id = resolveOcrText(text);
+    els.ocrStatus.textContent = id ? `识别到 ${nameOf(id)}。` : "OCR 完成，但没有匹配到式神；可以继续手动输入。";
+    renderOcrCandidate({ regionLabel: region.label, text, id });
+  } catch (error) {
+    console.error(error);
+    els.ocrStatus.textContent = `识别失败：${error.message}`;
+  }
 }
 
 function renderDefaultRecommendation(defaultRec) {
@@ -412,6 +541,24 @@ function bindEvents() {
     const id = resolveId(els.shikigamiSearch.value);
     if (state.shikigamiById.has(id)) addEnemyPick(id);
   });
+
+  els.screenshotInput.addEventListener("change", () => {
+    const file = els.screenshotInput.files?.[0];
+    if (!file) return;
+
+    const image = new Image();
+    image.onload = () => {
+      URL.revokeObjectURL(image.src);
+      state.screenshotImage = image;
+      els.ocrResults.replaceChildren();
+      els.ocrStatus.textContent = "截图已加载。名字牌区域已在预览中标出。";
+      drawScreenshotPreview();
+    };
+    image.src = URL.createObjectURL(file);
+  });
+
+  els.ocrLeftButton.addEventListener("click", () => recognizeRegion("left"));
+  els.ocrRightButton.addEventListener("click", () => recognizeRegion("right"));
 
   els.resetButton.addEventListener("click", () => {
     state.enemyPicks = [];
