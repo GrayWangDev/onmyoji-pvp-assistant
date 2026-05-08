@@ -49,8 +49,24 @@ function formatNames(ids) {
   return ids?.length ? ids.map(nameOf).join(" / ") : "无";
 }
 
-function unique(items) {
-  return [...new Set(items)];
+function bannedIds() {
+  return new Set([state.ourBan, state.enemyBan].filter(Boolean));
+}
+
+function isBanned(id) {
+  return bannedIds().has(id);
+}
+
+function removeBannedEnemyPicks() {
+  const banned = bannedIds();
+  const before = state.enemyPicks.length;
+  state.enemyPicks = state.enemyPicks.filter((id) => !banned.has(id));
+  return before !== state.enemyPicks.length;
+}
+
+function unavailablePicks(ids = []) {
+  const banned = bannedIds();
+  return ids.filter((id) => banned.has(id));
 }
 
 function enemyBansFor(matchup) {
@@ -141,6 +157,7 @@ function renderPicked() {
 
 function addEnemyPick(id) {
   if (!id || state.enemyPicks.includes(id)) return;
+  if (isBanned(id)) return;
   state.enemyPicks.push(id);
   state.query = "";
   els.shikigamiSearch.value = "";
@@ -162,8 +179,8 @@ function renderQuickPicks() {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "pick-button";
-    button.textContent = item.name;
-    button.disabled = state.enemyPicks.includes(item.id);
+    button.textContent = isBanned(item.id) ? `${item.name} · 已ban` : item.name;
+    button.disabled = state.enemyPicks.includes(item.id) || isBanned(item.id);
     button.addEventListener("click", () => addEnemyPick(item.id));
     return button;
   });
@@ -174,12 +191,15 @@ function renderDefaultRecommendation(defaultRec) {
   if (!defaultRec) return null;
   const box = document.createElement("div");
   box.className = "lineup";
+  const unavailable = unavailablePicks(defaultRec.first_picks || []);
   box.innerHTML = `
     <div class="lineup-title">
       <h3>${defaultRec.name}</h3>
       <span class="tag">默认起手</span>
+      ${unavailable.length ? `<span class="tag danger">含已ban</span>` : ""}
     </div>
     <p><span class="label">先选</span> ${formatNames(defaultRec.first_picks || [])}</p>
+    ${unavailable.length ? `<p class="warning-text">不可用：${formatNames(unavailable)} 已被ban，需要改走替代方案或继续观察。</p>` : ""}
     ${defaultRec.first_builds?.length ? `<p><span class="label">配置</span> ${defaultRec.first_builds.map(buildLabel).join(" / ")}</p>` : ""}
     <p>${defaultRec.reason || ""}</p>
   `;
@@ -189,6 +209,7 @@ function renderDefaultRecommendation(defaultRec) {
 function renderLineup(lineup, enemyPicks, enemyPickOrder) {
   const box = document.createElement("div");
   box.className = "lineup";
+  const unavailable = unavailablePicks(lineup.picks || []);
 
   const tags = [...(lineup.style || []), lineup.risk_level ? `风险${lineup.risk_level}` : "", lineup.difficulty ? `难度${lineup.difficulty}` : ""]
     .filter(Boolean)
@@ -228,8 +249,10 @@ function renderLineup(lineup, enemyPicks, enemyPickOrder) {
     <div class="lineup-title">
       <h3>${lineup.name}</h3>
       ${tags}
+      ${unavailable.length ? `<span class="tag danger">含已ban</span>` : ""}
     </div>
     <p><span class="label">阵容</span> ${formatNames(lineup.picks || [])}</p>
+    ${unavailable.length ? `<p class="warning-text">不可用：${formatNames(unavailable)} 已被ban，这套阵容只能作为思路参考。</p>` : ""}
     ${lineup.builds?.length ? `<p><span class="label">配置</span> ${lineup.builds.map(buildLabel).join(" / ")}</p>` : ""}
     ${fifthOptions}
     ${slotHtml}
@@ -309,6 +332,7 @@ function getMatches() {
 }
 
 function renderResults() {
+  removeBannedEnemyPicks();
   const matches = getMatches();
   els.contextLine.textContent = `${nameOf(state.ourBan)} vs ${state.enemyBan ? nameOf(state.enemyBan) : "未选择"} · 敌方 ${state.enemyPicks.length} 手`;
   els.matchCount.textContent = String(matches.length);
@@ -319,7 +343,13 @@ function renderResults() {
   }
 
   if (!matches.length) {
-    els.results.replaceChildren(htmlToNode(`<div class="empty-state">没有找到匹配策略包。</div>`));
+    els.results.replaceChildren(
+      htmlToNode(`
+        <div class="empty-state">
+          没有找到匹配策略包。当前可能是这个ban位还没录入，或对方选人不符合已有体系；先按经验手动判断，并把这个局面记录下来后续补规则。
+        </div>
+      `),
+    );
     return;
   }
 
@@ -361,12 +391,14 @@ function render() {
 function bindEvents() {
   els.ourBanSelect.addEventListener("change", () => {
     state.ourBan = els.ourBanSelect.value;
-    renderResults();
+    removeBannedEnemyPicks();
+    render();
   });
 
   els.enemyBanSelect.addEventListener("change", () => {
     state.enemyBan = els.enemyBanSelect.value;
-    renderResults();
+    removeBannedEnemyPicks();
+    render();
   });
 
   els.shikigamiSearch.addEventListener("input", () => {

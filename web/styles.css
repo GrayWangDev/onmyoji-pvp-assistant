@@ -314,10 +314,20 @@ input:focus {
   font-size: 12px;
 }
 
+.tag.danger {
+  background: #fff0ee;
+  color: var(--danger);
+}
+
 .label {
   color: var(--muted);
   font-size: 12px;
   font-weight: 800;
+}
+
+.warning-text {
+  color: var(--danger) !important;
+  font-weight: 700;
 }
 
 .branch-list {
