@@ -15,17 +15,19 @@ const state = {
   screenshotImage: null,
   ocrRegionGroups: {
     left: {
-      label: "左侧名字牌",
+      label: "我方名字牌",
+      side: "our",
       regions: [
-        { x: 0.10, y: 0.30, w: 0.28, h: 0.12, label: "左侧桌面名字牌" },
-        { x: 0.07, y: 0.23, w: 0.40, h: 0.25, label: "左侧大范围" },
+        { x: 0.10, y: 0.30, w: 0.28, h: 0.12, label: "我方桌面名字牌" },
+        { x: 0.07, y: 0.23, w: 0.40, h: 0.25, label: "我方大范围" },
       ],
     },
     right: {
-      label: "右侧名字牌",
+      label: "敌方名字牌",
+      side: "enemy",
       regions: [
-        { x: 0.49, y: 0.30, w: 0.30, h: 0.12, label: "右侧桌面名字牌" },
-        { x: 0.48, y: 0.23, w: 0.42, h: 0.25, label: "右侧大范围" },
+        { x: 0.49, y: 0.30, w: 0.30, h: 0.12, label: "敌方桌面名字牌" },
+        { x: 0.48, y: 0.23, w: 0.42, h: 0.25, label: "敌方大范围" },
       ],
     },
   },
@@ -290,7 +292,7 @@ function truncateText(text, maxLength = 72) {
   return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
 }
 
-function renderOcrCandidate({ regionLabel, text, id }) {
+function renderOcrCandidate({ regionLabel, text, id, side }) {
   const row = document.createElement("div");
   row.className = "ocr-result";
 
@@ -305,9 +307,15 @@ function renderOcrCandidate({ regionLabel, text, id }) {
   const button = document.createElement("button");
   button.type = "button";
   button.className = "pick-button";
-  button.textContent = id ? "加入" : "手动";
-  button.disabled = !id || isBanned(id) || state.enemyPicks.includes(id);
-  button.addEventListener("click", () => addEnemyPick(id));
+  if (side === "enemy") {
+    button.textContent = id ? "加入" : "手动";
+    button.disabled = !id || isBanned(id) || state.enemyPicks.includes(id);
+    button.addEventListener("click", () => addEnemyPick(id));
+  } else {
+    button.textContent = "我方";
+    button.disabled = true;
+    button.title = "左侧是我方展示，暂不加入敌方已选。";
+  }
 
   row.append(detail, button);
   els.ocrResults.prepend(row);
@@ -345,7 +353,7 @@ async function recognizeRegion(regionKey) {
     const text = best?.text || "";
     const id = best?.id || "";
     els.ocrStatus.textContent = id ? `识别到 ${nameOf(id)}。` : "OCR 完成，但没有匹配到式神；可以继续手动输入。";
-    renderOcrCandidate({ regionLabel: best?.region.label || group.label, text, id });
+    renderOcrCandidate({ regionLabel: best?.region.label || group.label, text, id, side: group.side });
   } catch (error) {
     console.error(error);
     els.ocrStatus.textContent = `识别失败：${error.message}`;
@@ -587,7 +595,7 @@ function bindEvents() {
       URL.revokeObjectURL(image.src);
       state.screenshotImage = image;
       els.ocrResults.replaceChildren();
-      els.ocrStatus.textContent = "截图已加载。左右名字牌候选范围已在预览中标出。";
+      els.ocrStatus.textContent = "截图已加载。左侧是我方展示，右侧是敌方展示；当前 OCR 只识别中间名字牌。";
       drawScreenshotPreview();
     };
     image.src = URL.createObjectURL(file);
