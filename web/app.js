@@ -13,9 +13,21 @@ const state = {
   enemyPicks: [],
   query: "",
   screenshotImage: null,
-  ocrRegions: {
-    left: { x: 0.11, y: 0.32, w: 0.22, h: 0.08, label: "左侧名字牌" },
-    right: { x: 0.50, y: 0.32, w: 0.22, h: 0.08, label: "右侧名字牌" },
+  ocrRegionGroups: {
+    left: {
+      label: "左侧名字牌",
+      regions: [
+        { x: 0.07, y: 0.23, w: 0.40, h: 0.25, label: "左侧大范围" },
+        { x: 0.10, y: 0.30, w: 0.28, h: 0.12, label: "左侧桌面名字牌" },
+      ],
+    },
+    right: {
+      label: "右侧名字牌",
+      regions: [
+        { x: 0.48, y: 0.23, w: 0.42, h: 0.25, label: "右侧大范围" },
+        { x: 0.49, y: 0.30, w: 0.30, h: 0.12, label: "右侧桌面名字牌" },
+      ],
+    },
   },
 };
 
@@ -232,22 +244,23 @@ function drawScreenshotPreview(activeRegionKey = "") {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-  for (const [key, region] of Object.entries(state.ocrRegions)) {
-    const isActive = key === activeRegionKey;
-    ctx.save();
-    ctx.strokeStyle = isActive ? "#b42318" : "#2d6cdf";
-    ctx.lineWidth = isActive ? 3 : 2;
-    ctx.setLineDash(isActive ? [] : [6, 4]);
-    ctx.strokeRect(region.x * canvas.width, region.y * canvas.height, region.w * canvas.width, region.h * canvas.height);
-    ctx.restore();
+  for (const [key, group] of Object.entries(state.ocrRegionGroups)) {
+    for (const region of group.regions) {
+      const isActive = key === activeRegionKey;
+      ctx.save();
+      ctx.strokeStyle = isActive ? "#b42318" : "#2d6cdf";
+      ctx.lineWidth = isActive ? 3 : 2;
+      ctx.setLineDash(isActive ? [] : [6, 4]);
+      ctx.strokeRect(region.x * canvas.width, region.y * canvas.height, region.w * canvas.width, region.h * canvas.height);
+      ctx.restore();
+    }
   }
 
   canvas.classList.add("is-visible");
 }
 
-function cropRegion(regionKey) {
+function cropRegion(region) {
   const image = state.screenshotImage;
-  const region = state.ocrRegions[regionKey];
   if (!image || !region) return null;
 
   const canvas = document.createElement("canvas");
@@ -299,17 +312,28 @@ async function recognizeRegion(regionKey) {
     return;
   }
 
-  const region = state.ocrRegions[regionKey];
+  const group = state.ocrRegionGroups[regionKey];
   drawScreenshotPreview(regionKey);
-  els.ocrStatus.textContent = `正在识别${region.label}...`;
+  els.ocrStatus.textContent = `正在识别${group.label}...`;
 
   try {
-    const crop = cropRegion(regionKey);
-    const result = await window.Tesseract.recognize(crop, "eng");
-    const text = result.data.text.replace(/\s+/g, " ").trim();
-    const id = resolveOcrText(text);
+    const attempts = [];
+    for (const region of group.regions) {
+      const crop = cropRegion(region);
+      const result = await window.Tesseract.recognize(crop, "eng");
+      const text = result.data.text.replace(/\s+/g, " ").trim();
+      const id = resolveOcrText(text);
+      const confidence = result.data.confidence || 0;
+      attempts.push({ region, text, id, confidence });
+      if (id) break;
+    }
+
+    const matched = attempts.find((attempt) => attempt.id);
+    const best = matched || attempts.sort((a, b) => b.confidence - a.confidence)[0];
+    const text = best?.text || "";
+    const id = best?.id || "";
     els.ocrStatus.textContent = id ? `识别到 ${nameOf(id)}。` : "OCR 完成，但没有匹配到式神；可以继续手动输入。";
-    renderOcrCandidate({ regionLabel: region.label, text, id });
+    renderOcrCandidate({ regionLabel: best?.region.label || group.label, text, id });
   } catch (error) {
     console.error(error);
     els.ocrStatus.textContent = `识别失败：${error.message}`;
@@ -551,7 +575,7 @@ function bindEvents() {
       URL.revokeObjectURL(image.src);
       state.screenshotImage = image;
       els.ocrResults.replaceChildren();
-      els.ocrStatus.textContent = "截图已加载。名字牌区域已在预览中标出。";
+      els.ocrStatus.textContent = "截图已加载。左右名字牌候选范围已在预览中标出。";
       drawScreenshotPreview();
     };
     image.src = URL.createObjectURL(file);
