@@ -1,11 +1,11 @@
 const VERSION = "2026-05";
-const STRATEGY_PATH = "../data/versions/2026-05/ban_magatsuhi/shijiamei/expert_a.json";
+const STRATEGY_INDEX_PATH = "../data/strategy-index.json";
 const OCR_LANGUAGES = "eng+chi_sim";
 
 const state = {
   shikigami: [],
   builds: [],
-  strategy: null,
+  strategies: [],
   aliasToId: new Map(),
   shikigamiById: new Map(),
   buildsById: new Map(),
@@ -137,9 +137,13 @@ function intersects(selected, candidates = []) {
   return candidates.some((item) => selected.has(item));
 }
 
-function systemScore(system, enemyPicks) {
+function systemScore(system, enemyPicks, enemyPickOrder = []) {
   let score = Number(system.initial_score || 0);
-  const confirmHits = system.confirm_picks?.filter((id) => enemyPicks.has(id)) || [];
+  const firstNRule = system.confirm_picks_first_n;
+  const firstNPicks = firstNRule ? new Set(enemyPickOrder.slice(0, Number(firstNRule.n || 0))) : null;
+  const normalConfirmHits = system.confirm_picks?.filter((id) => enemyPicks.has(id)) || [];
+  const firstNConfirmHits = firstNRule?.picks?.filter((id) => firstNPicks?.has(id)) || [];
+  const confirmHits = [...new Set([...normalConfirmHits, ...firstNConfirmHits])];
   const fuzzyHits = system.fuzzy_picks?.filter((id) => enemyPicks.has(id)) || [];
   const excludedHits = system.excluded_picks?.filter((id) => enemyPicks.has(id)) || [];
   score += confirmHits.length * 50;
@@ -534,16 +538,19 @@ function htmlToNode(html) {
 }
 
 function getMatches() {
-  if (!state.strategy || !state.ourBan || !state.enemyBan) return [];
+  if (!state.strategies.length || !state.ourBan || !state.enemyBan) return [];
   const enemyPickOrder = [...state.enemyPicks];
   const enemyPicks = new Set(enemyPickOrder);
 
-  return (state.strategy.matchups || [])
-    .filter((matchup) => enemyBansFor(matchup).includes(state.enemyBan))
-    .map((matchup) => {
+  return state.strategies
+    .filter((strategy) => strategy.enabled !== false && strategy.our_ban === state.ourBan)
+    .flatMap((strategy) => (strategy.matchups || []).map((matchup) => ({ strategy, matchup })))
+    .filter(({ matchup }) => enemyBansFor(matchup).includes(state.enemyBan))
+    .map(({ strategy, matchup }) => {
       const systems = (matchup.enemy_systems || [])
         .map((system) => {
-          const scoreData = systemScore(system, enemyPicks);
+          if (enemyPicks.size && system.required_picks && !includesAll(enemyPicks, system.required_picks)) return null;
+          const scoreData = systemScore(system, enemyPicks, enemyPickOrder);
           const hasCoreHit = intersects(enemyPicks, system.core_picks || []);
           if (scoreData.excludedHits.length) return null;
           if (enemyPicks.size && !scoreData.confirmHits.length && !scoreData.fuzzyHits.length && !hasCoreHit) return null;
@@ -552,7 +559,7 @@ function getMatches() {
         })
         .filter(Boolean)
         .sort((a, b) => b.scoreData.score - a.scoreData.score);
-      return { matchup, systems, enemyPicks, enemyPickOrder };
+      return { strategy, matchup, systems, enemyPicks, enemyPickOrder };
     });
 }
 
@@ -578,14 +585,14 @@ function renderResults() {
     return;
   }
 
-  const nodes = matches.map(({ matchup, systems, enemyPicks, enemyPickOrder }) => {
+  const nodes = matches.map(({ strategy, matchup, systems, enemyPicks, enemyPickOrder }) => {
     const box = document.createElement("article");
     box.className = "matchup";
     const header = htmlToNode(`
       <div class="matchup-header">
         <div>
           <h3>${matchup.title}</h3>
-          <p>${matchup.ambiguous_policy?.message || ""}</p>
+          <p>${strategy.system_name}${matchup.ambiguous_policy?.message ? ` · ${matchup.ambiguous_policy.message}` : ""}</p>
         </div>
       </div>
     `);
@@ -667,15 +674,16 @@ function bindEvents() {
 }
 
 async function init() {
-  const [shikigami, builds, strategy] = await Promise.all([
+  const [shikigami, builds, strategyPaths] = await Promise.all([
     fetch("../data/shikigami.json").then((res) => res.json()),
     fetch("../data/builds.json").then((res) => res.json()),
-    fetch(STRATEGY_PATH).then((res) => res.json()),
+    fetch(STRATEGY_INDEX_PATH).then((res) => res.json()),
   ]);
+  const strategies = await Promise.all(strategyPaths.map((path) => fetch(`../data/${path}`).then((res) => res.json())));
 
   state.shikigami = shikigami;
   state.builds = builds;
-  state.strategy = strategy;
+  state.strategies = strategies;
   state.shikigamiById = new Map(shikigami.map((item) => [item.id, item]));
   state.buildsById = new Map(builds.map((item) => [item.id, item]));
 

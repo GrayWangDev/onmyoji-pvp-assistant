@@ -98,10 +98,16 @@ def intersects(selected, candidates):
     return bool(set(candidates) & selected)
 
 
-def system_score(system, enemy_picks):
+def system_score(system, enemy_picks, enemy_pick_order):
     score = int(system.get("initial_score", 0))
 
     confirm_hits = set(system.get("confirm_picks", [])) & enemy_picks
+    first_n_rule = system.get("confirm_picks_first_n")
+    if first_n_rule:
+        first_n = int(first_n_rule.get("n", 0))
+        first_n_picks = set(enemy_pick_order[:first_n])
+        confirm_hits |= set(first_n_rule.get("picks", [])) & first_n_picks
+
     fuzzy_hits = set(system.get("fuzzy_picks", [])) & enemy_picks
     excluded_hits = set(system.get("excluded_picks", [])) & enemy_picks
 
@@ -192,7 +198,9 @@ def print_recommendations(args):
 
             systems = []
             for system in matchup.get("enemy_systems", []):
-                score, confirm_hits, fuzzy_hits, excluded_hits = system_score(system, enemy_picks)
+                if enemy_picks and "required_picks" in system and not includes_all(enemy_picks, system["required_picks"]):
+                    continue
+                score, confirm_hits, fuzzy_hits, excluded_hits = system_score(system, enemy_picks, enemy_pick_order)
                 if excluded_hits:
                     continue
                 if enemy_picks and not confirm_hits and not fuzzy_hits and not intersects(enemy_picks, system.get("core_picks", [])):

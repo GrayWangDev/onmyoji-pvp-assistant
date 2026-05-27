@@ -1,0 +1,75 @@
+{
+  "id": "expert_a_ban_kuzunoha_huoshan_omoikane_2026_05",
+  "schema": "enemy_system_prediction_v1",
+  "version": "2026-05",
+  "author": "高手A",
+  "our_ban": "kuzunoha",
+  "system": "huoshan_omoikane",
+  "system_name": "ban葛叶 · 火山体系（思金神版本）",
+  "enabled": true,
+  "matchups": [
+    {
+      "id": "vs_enemy_ban_odokuro_shenlong",
+      "title": "对方ban骷髅 · 神龙体系",
+      "enemy_ban": "odokuro",
+      "default_recommendation": {
+        "id": "zen_tun_yukigozen_enma_prepare",
+        "name": "先准备禅吞太奶阎",
+        "first_picks": [
+          "spungaikyo",
+          "spshutendoji",
+          "yukigozen",
+          "enma"
+        ],
+        "first_builds": [],
+        "reason": "对方ban骷髅时，大概率往神龙体系走；如果对方阵容里同时出现神无月和龙珏，就按禅、吞、太奶、阎展开。"
+      },
+      "enemy_systems": [
+        {
+          "id": "shenlong",
+          "name": "神龙体系",
+          "initial_score": 40,
+          "core_picks": [],
+          "required_picks": [
+            "kannazuki",
+            "loongjue"
+          ],
+          "confirm_picks": [
+            "kannazuki",
+            "loongjue"
+          ],
+          "fuzzy_picks": [],
+          "notes": "敌方5人阵容里同时出现神无月和龙珏时，按神龙体系处理。",
+          "recommended_lineups": [
+            {
+              "id": "zen_tun_yukigozen_enma_vs_shenlong",
+              "name": "禅吞太奶阎",
+              "picks": [
+                "spungaikyo",
+                "spshutendoji",
+                "yukigozen",
+                "enma"
+              ],
+              "fifth_options": [
+                "guijin",
+                "sponikiri",
+                "himiko"
+              ],
+              "style": [
+                "反神龙",
+                "火山"
+              ],
+              "difficulty": 3,
+              "risk_level": "中",
+              "reason": "对方阵容同时出现神无月和龙珏时，我方前4手禅、吞、太奶、阎，5手根据局面在羊、切、卑里选。"
+            }
+          ]
+        }
+      ],
+      "ambiguous_policy": {
+        "keep_all_systems": true,
+        "message": "如果对方ban骷髅但还没同时看到神无月和龙珏，先按神龙可能性观察，不要过早锁死。"
+      }
+    }
+  ]
+}

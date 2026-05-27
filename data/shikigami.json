@@ -287,6 +287,18 @@
     "name": "初音",
     "aliases": ["初音", "音"],
     "type": "SSR"
+  },
+  {
+    "id": "omoikane",
+    "name": "思金神",
+    "aliases": ["思金神", "思金", "Omoikane"],
+    "type": "SSR"
+  },
+  {
+    "id": "yukigozen",
+    "name": "雪御前",
+    "aliases": ["雪御前", "太奶", "Yukigozen"],
+    "type": "SSR"
   }
 
 ]
