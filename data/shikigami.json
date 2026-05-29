@@ -271,6 +271,12 @@
     "type": "SP"
   },
   {
+    "id": "ssrsenhime",
+    "name": "千姬",
+    "aliases": ["千姬", "ssr千", "SSR千"],
+    "type": "SSR"
+  },
+  {
     "id": "ssrichi",
     "name": "一目连",
     "aliases": ["一目", "连"],
@@ -298,6 +304,61 @@
     "id": "yukigozen",
     "name": "雪御前",
     "aliases": ["雪御前", "太奶", "Yukigozen"],
+    "type": "SSR"
+  },
+  {
+    "id": "tagitsuhime",
+    "name": "湍津姬",
+    "aliases": ["湍津姬", "Tagitsuhime"],
+    "type": "SR"
+  },
+  {
+    "id": "kyuumei",
+    "name": "九命猫",
+    "aliases": ["九命猫", "kyuumei", "sp猫"],
+    "type": "SP"
+  },
+  {
+    "id": "spebisu",
+    "name": "SP惠比寿",
+    "aliases": ["SP惠比寿", "Ebisu", "老头"],
+    "type": "SP",
+    "allow_duplicate": true
+  },
+  {
+    "id": "nekokawa",
+    "name": "猫川",
+    "aliases": ["猫川", "猫", "nekokawa"],
+    "type": "SSR"
+  },
+  {
+    "id": "otakemaru",
+    "name": "麓铭大岳丸",
+    "aliases": ["麓铭大岳丸", "麓丸", "鱼丸", "大岳丸", "otakemaru"],
+    "type": "SP"
+  },
+  {
+    "id": "jiaotu",
+    "name": "椒图",
+    "aliases": ["椒图", "jiaotu"],
+    "type": "R"
+  },
+  {
+    "id": "kyuketsuhime",
+    "name": "吸血姬",
+    "aliases": ["吸血姬", "吸血", "kyuketsuhime"],
+    "type": "SR"
+  },
+  {
+    "id": "ameonna",
+    "name": "雨女",
+    "aliases": ["雨女", "ameonna"],
+    "type": "R"
+  },
+  {
+    "id": "megurine",
+    "name": "巡音",
+    "aliases": ["巡音", "megurine"],
     "type": "SSR"
   }
 

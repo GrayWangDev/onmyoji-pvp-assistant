@@ -111,6 +111,10 @@ function isBanned(id) {
   return bannedIds().has(id);
 }
 
+function canPickDuplicate(id) {
+  return Boolean(state.shikigamiById.get(id)?.allow_duplicate);
+}
+
 function removeBannedEnemyPicks() {
   const banned = bannedIds();
   const before = state.enemyPicks.length;
@@ -135,6 +139,14 @@ function includesAll(selected, required = []) {
 
 function intersects(selected, candidates = []) {
   return candidates.some((item) => selected.has(item));
+}
+
+function includesCounts(items, requiredCounts = {}) {
+  const counts = new Map();
+  for (const item of items) {
+    counts.set(item, (counts.get(item) || 0) + 1);
+  }
+  return Object.entries(requiredCounts).every(([id, count]) => (counts.get(id) || 0) >= Number(count));
 }
 
 function systemScore(system, enemyPicks, enemyPickOrder = []) {
@@ -214,8 +226,9 @@ function renderPicked() {
 }
 
 function addEnemyPick(id) {
-  if (!id || state.enemyPicks.includes(id)) return;
+  if (!id) return;
   if (isBanned(id)) return;
+  if (state.enemyPicks.includes(id) && !canPickDuplicate(id)) return;
   state.enemyPicks.push(id);
   state.query = "";
   els.shikigamiSearch.value = "";
@@ -238,7 +251,7 @@ function renderQuickPicks() {
     button.type = "button";
     button.className = "pick-button";
     button.textContent = isBanned(item.id) ? `${item.name} · 已ban` : item.name;
-    button.disabled = state.enemyPicks.includes(item.id) || isBanned(item.id);
+    button.disabled = (state.enemyPicks.includes(item.id) && !canPickDuplicate(item.id)) || isBanned(item.id);
     button.addEventListener("click", () => addEnemyPick(item.id));
     return button;
   });
@@ -352,7 +365,7 @@ function renderOcrCandidate({ regionLabel, text, id, side }) {
   button.className = "pick-button";
   if (side === "enemy") {
     button.textContent = id ? "加入" : "手动";
-    button.disabled = !id || isBanned(id) || state.enemyPicks.includes(id);
+    button.disabled = !id || isBanned(id) || (state.enemyPicks.includes(id) && !canPickDuplicate(id));
     button.addEventListener("click", () => addEnemyPick(id));
   } else {
     button.textContent = "我方";
@@ -550,6 +563,7 @@ function getMatches() {
       const systems = (matchup.enemy_systems || [])
         .map((system) => {
           if (enemyPicks.size && system.required_picks && !includesAll(enemyPicks, system.required_picks)) return null;
+          if (enemyPicks.size && system.required_pick_counts && !includesCounts(enemyPickOrder, system.required_pick_counts)) return null;
           const scoreData = systemScore(system, enemyPicks, enemyPickOrder);
           const hasCoreHit = intersects(enemyPicks, system.core_picks || []);
           if (scoreData.excludedHits.length) return null;

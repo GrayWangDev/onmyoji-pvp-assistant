@@ -98,6 +98,13 @@ def intersects(selected, candidates):
     return bool(set(candidates) & selected)
 
 
+def includes_counts(items, required_counts):
+    counts = {}
+    for item in items:
+        counts[item] = counts.get(item, 0) + 1
+    return all(counts.get(item, 0) >= int(count) for item, count in required_counts.items())
+
+
 def system_score(system, enemy_picks, enemy_pick_order):
     score = int(system.get("initial_score", 0))
 
@@ -199,6 +206,8 @@ def print_recommendations(args):
             systems = []
             for system in matchup.get("enemy_systems", []):
                 if enemy_picks and "required_picks" in system and not includes_all(enemy_picks, system["required_picks"]):
+                    continue
+                if enemy_picks and "required_pick_counts" in system and not includes_counts(enemy_pick_order, system["required_pick_counts"]):
                     continue
                 score, confirm_hits, fuzzy_hits, excluded_hits = system_score(system, enemy_picks, enemy_pick_order)
                 if excluded_hits:
