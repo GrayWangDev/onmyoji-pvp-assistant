@@ -105,6 +105,11 @@ def includes_counts(items, required_counts):
     return all(counts.get(item, 0) >= int(count) for item, count in required_counts.items())
 
 
+def includes_within_first_n(items, rule):
+    first_n = int(rule.get("n", 0))
+    return includes_all(set(items[:first_n]), rule.get("picks", []))
+
+
 def system_score(system, enemy_picks, enemy_pick_order):
     score = int(system.get("initial_score", 0))
 
@@ -170,11 +175,16 @@ def print_recommendations(args):
     our_ban = resolve_one(args.our_ban, alias_to_id)
     enemy_ban = resolve_one(args.enemy_ban, alias_to_id)
     enemy_pick_order = resolve_many(args.enemy_picks, alias_to_id)
+    banned = {our_ban, enemy_ban}
+    ignored_picks = [item for item in enemy_pick_order if item in banned]
+    enemy_pick_order = [item for item in enemy_pick_order if item not in banned]
     enemy_picks = set(enemy_pick_order)
 
     print(f"版本: {args.version}")
     print(f"我方ban: {display_shikigami(our_ban, shikigami_by_id)}")
     print(f"敌方ban: {display_shikigami(enemy_ban, shikigami_by_id)}")
+    if ignored_picks:
+        print(f"已忽略ban位式神: {format_ids(ignored_picks, shikigami_by_id)}")
     print(f"敌方已选: {format_ids(enemy_pick_order, shikigami_by_id)}")
     print()
 
@@ -205,9 +215,13 @@ def print_recommendations(args):
 
             systems = []
             for system in matchup.get("enemy_systems", []):
+                if "enemy_bans" in system and enemy_ban not in set(system["enemy_bans"]):
+                    continue
                 if enemy_picks and "required_picks" in system and not includes_all(enemy_picks, system["required_picks"]):
                     continue
                 if enemy_picks and "required_pick_counts" in system and not includes_counts(enemy_pick_order, system["required_pick_counts"]):
+                    continue
+                if enemy_picks and "required_first_n_picks" in system and not includes_within_first_n(enemy_pick_order, system["required_first_n_picks"]):
                     continue
                 score, confirm_hits, fuzzy_hits, excluded_hits = system_score(system, enemy_picks, enemy_pick_order)
                 if excluded_hits:

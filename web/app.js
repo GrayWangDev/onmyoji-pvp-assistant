@@ -149,6 +149,11 @@ function includesCounts(items, requiredCounts = {}) {
   return Object.entries(requiredCounts).every(([id, count]) => (counts.get(id) || 0) >= Number(count));
 }
 
+function includesWithinFirstN(items, rule = {}) {
+  const firstN = new Set(items.slice(0, Number(rule.n || 0)));
+  return includesAll(firstN, rule.picks || []);
+}
+
 function systemScore(system, enemyPicks, enemyPickOrder = []) {
   let score = Number(system.initial_score || 0);
   const firstNRule = system.confirm_picks_first_n;
@@ -562,8 +567,10 @@ function getMatches() {
     .map(({ strategy, matchup }) => {
       const systems = (matchup.enemy_systems || [])
         .map((system) => {
+          if (Array.isArray(system.enemy_bans) && !system.enemy_bans.includes(state.enemyBan)) return null;
           if (enemyPicks.size && system.required_picks && !includesAll(enemyPicks, system.required_picks)) return null;
           if (enemyPicks.size && system.required_pick_counts && !includesCounts(enemyPickOrder, system.required_pick_counts)) return null;
+          if (enemyPicks.size && system.required_first_n_picks && !includesWithinFirstN(enemyPickOrder, system.required_first_n_picks)) return null;
           const scoreData = systemScore(system, enemyPicks, enemyPickOrder);
           const hasCoreHit = intersects(enemyPicks, system.core_picks || []);
           if (scoreData.excludedHits.length) return null;

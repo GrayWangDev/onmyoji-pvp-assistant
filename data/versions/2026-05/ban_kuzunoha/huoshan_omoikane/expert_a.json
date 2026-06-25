@@ -22,14 +22,13 @@
           "enma"
         ],
         "first_builds": [],
-        "reason": "对方ban骷髅时，大概率往神龙体系走；如果对方阵容里同时出现神无月和龙珏，就按禅、吞、太奶、阎展开。"
+        "reason": "对方ban骷髅时，大概率往神龙体系走；我方先准备禅、吞、太奶、阎，5手根据神龙帝面/神龙平云/神平云泷分支决定。"
       },
       "enemy_systems": [
         {
-          "id": "shenlong",
-          "name": "神龙体系",
-          "initial_score": 40,
-          "core_picks": [],
+          "id": "shenlong_generic",
+          "name": "神龙体系泛用",
+          "initial_score": 36,
           "required_picks": [
             "kannazuki",
             "loongjue"
@@ -38,11 +37,103 @@
             "kannazuki",
             "loongjue"
           ],
+          "excluded_picks": [
+            "taishakuten",
+            "menreiki",
+            "taira",
+            "ungaikyo"
+          ],
           "fuzzy_picks": [],
-          "notes": "敌方5人阵容里同时出现神无月和龙珏时，按神龙体系处理。",
+          "notes": "敌方5人阵容里同时出现神无月和龙珏时，先按神龙体系处理；看到帝面或平云后优先走更具体分支。",
           "recommended_lineups": [
             {
-              "id": "zen_tun_yukigozen_enma_vs_shenlong",
+              "id": "zen_tun_yukigozen_enma_prepare_vs_shenlong_generic",
+              "name": "禅吞太奶阎观察",
+              "picks": [
+                "spungaikyo",
+                "spshutendoji",
+                "yukigozen",
+                "enma"
+              ],
+              "fifth_options": [
+                "guijin",
+                "taishakuten",
+                "sponikiri"
+              ],
+              "style": [
+                "反神龙",
+                "ban骷髅",
+                "泛用观察"
+              ],
+              "difficulty": 3,
+              "risk_level": "中",
+              "reason": "对方只露出神无月+龙珏、还没确定细分时，我方前4手禅、吞、太奶、阎，5手先在羊/帝/奶切方向观察。"
+            }
+          ]
+        },
+        {
+          "id": "shenlong_taisha_menreiki",
+          "name": "神龙帝面",
+          "initial_score": 56,
+          "required_picks": [
+            "kannazuki",
+            "loongjue",
+            "taishakuten",
+            "menreiki"
+          ],
+          "confirm_picks": [
+            "kannazuki",
+            "loongjue",
+            "taishakuten",
+            "menreiki"
+          ],
+          "fuzzy_picks": [],
+          "notes": "对方神龙帝面时，我方前四手禅吞太奶阎，5手蚌精奶切；阴阳师带神乐。",
+          "recommended_lineups": [
+            {
+              "id": "zen_tun_yukigozen_enma_sponikiri_vs_shenlong_taisha_menreiki",
+              "name": "禅吞太奶阎奶切",
+              "picks": [
+                "spungaikyo",
+                "spshutendoji",
+                "yukigozen",
+                "enma"
+              ],
+              "fifth_options": [
+                "sponikiri"
+              ],
+              "style": [
+                "反神龙",
+                "ban骷髅",
+                "对神龙帝面"
+              ],
+              "difficulty": 3,
+              "risk_level": "中",
+              "reason": "对方神龙帝面时，我方前4手禅、吞、太奶、阎，5手蚌精奶切；阴阳师带神乐。"
+            }
+          ]
+        },
+        {
+          "id": "shenlong_taira_ungaikyo",
+          "name": "神龙平云",
+          "initial_score": 54,
+          "required_picks": [
+            "kannazuki",
+            "loongjue",
+            "taira",
+            "ungaikyo"
+          ],
+          "confirm_picks": [
+            "kannazuki",
+            "loongjue",
+            "taira",
+            "ungaikyo"
+          ],
+          "fuzzy_picks": [],
+          "notes": "对方神龙平云时，我方前四手禅吞太奶阎，5手羊/帝。",
+          "recommended_lineups": [
+            {
+              "id": "zen_tun_yukigozen_enma_fifth_vs_shenlong_taira_ungaikyo",
               "name": "禅吞太奶阎",
               "picks": [
                 "spungaikyo",
@@ -52,23 +143,69 @@
               ],
               "fifth_options": [
                 "guijin",
-                "sponikiri",
-                "himiko"
+                "taishakuten"
               ],
               "style": [
                 "反神龙",
-                "火山"
+                "ban骷髅",
+                "对神龙平云"
               ],
               "difficulty": 3,
               "risk_level": "中",
-              "reason": "对方阵容同时出现神无月和龙珏时，我方前4手禅、吞、太奶、阎，5手根据局面在羊、切、卑里选。"
+              "reason": "对方神龙平云时，我方前4手禅、吞、太奶、阎，5手羊/帝。"
+            }
+          ]
+        },
+        {
+          "id": "shen_taira_ungaikyo_taki",
+          "name": "神平云泷",
+          "initial_score": 52,
+          "required_picks": [
+            "kannazuki",
+            "taira",
+            "ungaikyo",
+            "taki"
+          ],
+          "confirm_picks": [
+            "kannazuki",
+            "taira",
+            "ungaikyo",
+            "taki"
+          ],
+          "fuzzy_picks": [
+            "loongjue"
+          ],
+          "notes": "这套虽然没龙珏，但算神龙平体系变体；很多神龙打火山会把龙优化掉，因为龙打平效果不好。",
+          "recommended_lineups": [
+            {
+              "id": "zen_tun_yukigozen_enma_fifth_vs_shen_taira_ungaikyo_taki",
+              "name": "禅吞太奶阎",
+              "picks": [
+                "spungaikyo",
+                "spshutendoji",
+                "yukigozen",
+                "enma"
+              ],
+              "fifth_options": [
+                "oitsuki",
+                "taishakuten",
+                "guijin"
+              ],
+              "style": [
+                "反神龙",
+                "ban骷髅",
+                "神龙平变体"
+              ],
+              "difficulty": 3,
+              "risk_level": "中",
+              "reason": "对方神平云泷时，我方前4手禅、吞、太奶、阎，5手追/帝/羊。"
             }
           ]
         }
       ],
       "ambiguous_policy": {
         "keep_all_systems": true,
-        "message": "如果对方ban骷髅但还没同时看到神无月和龙珏，先按神龙可能性观察，不要过早锁死。"
+        "message": "如果对方ban骷髅但还没看到神龙、神龙平云或神平云泷信号，先按神龙可能性观察，不要过早锁死。"
       }
     },
     {
@@ -169,6 +306,43 @@
               ]
             }
           ]
+        },
+        {
+          "id": "ban_feng_huoshan_mirror",
+          "name": "ban封火山内战",
+          "initial_score": 45,
+          "required_picks": [
+            "taira",
+            "spfuken"
+          ],
+          "confirm_picks": [
+            "taira",
+            "spfuken",
+            "spzashiki",
+            "spyamalordenma"
+          ],
+          "fuzzy_picks": [],
+          "notes": "如果遇到ban封的火山内战，我方走平岳扭摩麓。",
+          "recommended_lineups": [
+            {
+              "id": "ban_feng_mirror_taira_fuken_zashiki_moto_otakemaru",
+              "name": "平岳扭摩麓",
+              "picks": [
+                "taira",
+                "spfuken",
+                "spzashiki",
+                "spyamalordenma",
+                "otakemaru"
+              ],
+              "style": [
+                "火山内战",
+                "ban封特化"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "对方ban封且转火山时，我方平、海图岳、扭蛋、摩托、麓丸。"
+            }
+          ]
         }
       ],
       "ambiguous_policy": {
@@ -181,6 +355,100 @@
       "title": "对方ban平 · 挖土 / 禅吞 / 离封",
       "enemy_ban": "taira",
       "enemy_systems": [
+        {
+          "id": "menreiki_watu",
+          "name": "面灵气挖土",
+          "initial_score": 32,
+          "required_picks": [
+            "menreiki"
+          ],
+          "confirm_picks": [
+            "menreiki"
+          ],
+          "fuzzy_picks": [
+            "loongjue",
+            "fengyang",
+            "himiko",
+            "spinabakaguya",
+            "sptakiyashahime"
+          ],
+          "notes": "对方ban平且露出面灵气时，先按挖土可能性观察；没有平将门就不走火山。",
+          "recommended_lineups": [
+            {
+              "id": "himiko_cha_enma_shiranui_fifth_vs_taira_ban_menreiki_watu",
+              "name": "卑茶阎离",
+              "picks": [
+                "himiko",
+                "sptakiyashahime",
+                "enma",
+                "shiranui"
+              ],
+              "fifth_options": [
+                "nekokawa",
+                "spshutendoji",
+                "fengyang",
+                "spkohaku"
+              ],
+              "style": [
+                "ban平",
+                "反面灵气挖土"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "没有平将门就不玩火山；对方面灵气挖土时，我方卑、茶、阎、离，5手猫川/吞/封/SP白。"
+            }
+          ],
+          "excluded_picks": [
+            "loongjue"
+          ]
+        },
+        {
+          "id": "loong_men_watu_observe",
+          "name": "龙面挖土观察",
+          "initial_score": 34,
+          "required_picks": [
+            "loongjue",
+            "menreiki"
+          ],
+          "confirm_picks": [
+            "loongjue",
+            "menreiki"
+          ],
+          "excluded_picks": [
+            "fengyang",
+            "himiko"
+          ],
+          "fuzzy_picks": [
+            "spinabakaguya",
+            "sptakiyashahime"
+          ],
+          "notes": "对方ban平且出现龙珏+面灵气时，先按面灵气挖土观察；如果后续补封或卑，会进入更具体分支。",
+          "recommended_lineups": [
+            {
+              "id": "himiko_cha_enma_shiranui_fifth_vs_taira_ban_loong_men_watu",
+              "name": "卑茶阎离",
+              "picks": [
+                "himiko",
+                "sptakiyashahime",
+                "enma",
+                "shiranui"
+              ],
+              "fifth_options": [
+                "nekokawa",
+                "spshutendoji",
+                "fengyang",
+                "spkohaku"
+              ],
+              "style": [
+                "ban平",
+                "反面灵气挖土"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "对方龙面挖土时，我方卑、茶、阎、离，5手猫川/吞/封/SP白。"
+            }
+          ]
+        },
         {
           "id": "loong_feng_men_watu",
           "name": "龙封面挖土",
@@ -196,25 +464,30 @@
             "menreiki"
           ],
           "fuzzy_picks": [],
-          "notes": "敌方阵容同时出现龙珏、封阳君、面灵气时，按龙封面挖土处理。",
+          "notes": "敌方阵容同时出现龙珏、封阳君、面灵气时，按面灵气挖土处理；没有平将门就不走火山。",
           "recommended_lineups": [
             {
-              "id": "himiko_enma_cha_shiranui_spkohaku_vs_loong_feng_men",
-              "name": "卑阎茶离SP白",
+              "id": "himiko_cha_enma_shiranui_fifth_vs_loong_feng_men_watu",
+              "name": "卑茶阎离",
               "picks": [
                 "himiko",
-                "enma",
                 "sptakiyashahime",
-                "shiranui",
+                "enma",
+                "shiranui"
+              ],
+              "fifth_options": [
+                "nekokawa",
+                "spshutendoji",
+                "fengyang",
                 "spkohaku"
               ],
               "style": [
-                "反挖土",
-                "火山"
+                "ban平",
+                "反面灵气挖土"
               ],
               "difficulty": 4,
               "risk_level": "中",
-              "reason": "对方龙封面挖土时，我方翻卑、阎、茶、离、SP白。"
+              "reason": "对方龙封面挖土时，我方卑、茶、阎、离，5手猫川/吞/封/SP白。"
             }
           ]
         },
@@ -236,25 +509,30 @@
             "fengyang"
           ],
           "fuzzy_picks": [],
-          "notes": "敌方龙面挖土不带封，转而上卑弥呼等抢速卡时，按龙面抢速挖土处理。",
+          "notes": "敌方龙面挖土不带封，转而上卑弥呼等抢速卡时，按面灵气挖土处理；没有平将门就不走火山。",
           "recommended_lineups": [
             {
-              "id": "himiko_enma_cha_shiranui_nekokawa_vs_loong_men_speed",
-              "name": "卑阎茶离猫川",
+              "id": "himiko_cha_enma_shiranui_fifth_vs_loong_men_speed_watu",
+              "name": "卑茶阎离",
               "picks": [
                 "himiko",
-                "enma",
                 "sptakiyashahime",
-                "shiranui",
-                "nekokawa"
+                "enma",
+                "shiranui"
+              ],
+              "fifth_options": [
+                "nekokawa",
+                "spshutendoji",
+                "fengyang",
+                "spkohaku"
               ],
               "style": [
-                "反挖土",
-                "抢速"
+                "ban平",
+                "反面灵气挖土"
               ],
               "difficulty": 4,
               "risk_level": "中",
-              "reason": "对方龙面挖土不带封，并上很多抢速卡例如卑弥呼时，我方翻卑、阎、茶、离、猫川。"
+              "reason": "对方龙面抢速挖土时，我方卑、茶、阎、离，5手猫川/吞/封/SP白。"
             }
           ]
         },
@@ -297,9 +575,47 @@
           ]
         },
         {
+          "id": "zen_yang",
+          "name": "禅羊体系",
+          "initial_score": 40,
+          "required_picks": [
+            "spungaikyo",
+            "guijin"
+          ],
+          "confirm_picks": [
+            "spungaikyo",
+            "guijin"
+          ],
+          "fuzzy_picks": [],
+          "notes": "敌方阵容同时出现禅镜和鬼金羊时，按禅羊体系处理。",
+          "recommended_lineups": [
+            {
+              "id": "himiko_cha_enma_inaba_fifth_vs_taira_ban_zen_yang",
+              "name": "卑茶阎因",
+              "picks": [
+                "himiko",
+                "sptakiyashahime",
+                "enma",
+                "spinabakaguya"
+              ],
+              "fifth_options": [
+                "suzukagozen",
+                "tsukuyomi"
+              ],
+              "style": [
+                "ban平",
+                "反禅羊"
+              ],
+              "difficulty": 3,
+              "risk_level": "中",
+              "reason": "对方禅羊时，我方卑、茶、阎、因，5手06/月读。"
+            }
+          ]
+        },
+        {
           "id": "li_feng",
           "name": "离封体系",
-          "initial_score": 35,
+          "initial_score": 40,
           "required_picks": [
             "shiranui",
             "fengyang"
@@ -309,32 +625,173 @@
             "fengyang"
           ],
           "fuzzy_picks": [],
-          "notes": "敌方阵容同时出现不知火和封阳君时，按离封体系处理。",
+          "notes": "敌方阵容同时出现不知火和封阳君时，按离封体系处理；ban平没有平将门，不走火山。",
           "recommended_lineups": [
             {
-              "id": "himiko_shiranui_fengyang_cha_yang_vs_li_feng",
-              "name": "卑离封茶羊",
+              "id": "himiko_cha_feng_shiranui_fifth_vs_taira_ban_li_feng",
+              "name": "卑茶封离",
               "picks": [
                 "himiko",
-                "shiranui",
-                "fengyang",
                 "sptakiyashahime",
+                "fengyang",
+                "shiranui"
+              ],
+              "fifth_options": [
+                "ssrmagetsuhi",
+                "enma",
                 "guijin"
               ],
               "style": [
-                "反离封",
-                "火山"
+                "ban平",
+                "反离封"
               ],
               "difficulty": 3,
               "risk_level": "中",
-              "reason": "对方离封体系时，我方翻卑、离、封、茶、羊。"
+              "reason": "对面离封时，我方卑、茶、封、离，5手祸/阎/羊。"
             }
           ]
         }
       ],
       "ambiguous_policy": {
         "keep_all_systems": true,
-        "message": "如果对方ban平但还没命中龙封面、龙面抢速、禅吞或离封条件，先继续观察。"
+        "message": "如果对方ban平但还没命中面灵气挖土、禅吞或离封条件，先继续观察。"
+      }
+    },
+    {
+      "id": "vs_enemy_coop_counter_bans",
+      "title": "对方协战 · 多ban位通用",
+      "enemy_bans": [
+        "taki",
+        "sponikiri",
+        "taira",
+        "kujaku"
+      ],
+      "default_recommendation": {
+        "id": "coop_counter_prepare",
+        "name": "先按协战观察",
+        "first_picks": [
+          "himiko",
+          "sptakiyashahime",
+          "spinabakaguya"
+        ],
+        "first_builds": [],
+        "reason": "对方ban泷/切/平/孔这类克制协战的式神时，可能是协战队；但离只是必要条件，看到离+猫川/红叶这类输出后再基本确认。"
+      },
+      "enemy_systems": [
+        {
+          "id": "coop_team_nekokawa",
+          "name": "协战队 · 离猫川",
+          "initial_score": 45,
+          "required_picks": [
+            "shiranui",
+            "nekokawa"
+          ],
+          "confirm_picks": [
+            "shiranui",
+            "nekokawa"
+          ],
+          "fuzzy_picks": [],
+          "notes": "协战队必有离，但有离未必是协战；看到离+猫川时，按协战队处理。",
+          "recommended_lineups": [
+            {
+              "id": "himiko_cha_inaba_counter_slots_vs_coop",
+              "name": "卑茶因 + 克制位",
+              "picks": [
+                "himiko",
+                "sptakiyashahime",
+                "spinabakaguya"
+              ],
+              "lineup_slots": [
+                {
+                  "slot": 4,
+                  "options": [
+                    "kujaku",
+                    "taki",
+                    "sponikiri",
+                    "taira"
+                  ],
+                  "note": "优先孔雀/泷；如果被ban，就从对面放出的切/平等克制卡里补。"
+                },
+                {
+                  "slot": 5,
+                  "options": [
+                    "taki",
+                    "kujaku",
+                    "sponikiri",
+                    "taira"
+                  ],
+                  "note": "完整理想方向是卑、茶、因、孔、泷；但协战ban位很多，按放出的克制卡调整。"
+                }
+              ],
+              "style": [
+                "反协战",
+                "多ban位通用"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "对方协战时，我方核心是卑、茶、因、孔、泷；如果对方ban掉泷/孔/切/平中的某张，就用剩下放出的克制卡补位。"
+            }
+          ]
+        },
+        {
+          "id": "coop_team_momiji",
+          "name": "协战队 · 离红叶",
+          "initial_score": 45,
+          "required_picks": [
+            "shiranui",
+            "spmomiji"
+          ],
+          "confirm_picks": [
+            "shiranui",
+            "spmomiji"
+          ],
+          "fuzzy_picks": [],
+          "notes": "协战队必有离，但有离未必是协战；看到离+红叶时，按协战队处理。",
+          "recommended_lineups": [
+            {
+              "id": "himiko_cha_inaba_counter_slots_vs_coop",
+              "name": "卑茶因 + 克制位",
+              "picks": [
+                "himiko",
+                "sptakiyashahime",
+                "spinabakaguya"
+              ],
+              "lineup_slots": [
+                {
+                  "slot": 4,
+                  "options": [
+                    "kujaku",
+                    "taki",
+                    "sponikiri",
+                    "taira"
+                  ],
+                  "note": "优先孔雀/泷；如果被ban，就从对面放出的切/平等克制卡里补。"
+                },
+                {
+                  "slot": 5,
+                  "options": [
+                    "taki",
+                    "kujaku",
+                    "sponikiri",
+                    "taira"
+                  ],
+                  "note": "完整理想方向是卑、茶、因、孔、泷；但协战ban位很多，按放出的克制卡调整。"
+                }
+              ],
+              "style": [
+                "反协战",
+                "多ban位通用"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "对方协战时，我方核心是卑、茶、因、孔、泷；如果对方ban掉泷/孔/切/平中的某张，就用剩下放出的克制卡补位。"
+            }
+          ]
+        }
+      ],
+      "ambiguous_policy": {
+        "keep_all_systems": true,
+        "message": "如果只是看到对方ban了泷/切/平/孔，或只看到不知火，还不能确认协战；看到离+猫川/红叶后再锁定。"
       }
     },
     {
@@ -345,7 +802,7 @@
         {
           "id": "himiko_spkohaku",
           "name": "卑白体系",
-          "initial_score": 35,
+          "initial_score": 42,
           "required_picks": [
             "himiko",
             "spkohaku"
@@ -355,54 +812,29 @@
             "spkohaku"
           ],
           "fuzzy_picks": [],
-          "notes": "对方阵容同时出现卑弥呼和SP白时，按卑白体系处理。",
+          "notes": "对方ban吞且阵容同时出现卑弥呼和SP白时，按卑白体系处理；我方平岳思摩，5手卑/羊，阴阳师带神乐。",
           "recommended_lineups": [
             {
-              "id": "himiko_inaba_spkohaku_enma_cha_vs_himiko_spkohaku",
-              "name": "卑因SP白阎茶",
-              "picks": [
-                "himiko",
-                "spinabakaguya",
-                "spkohaku",
-                "enma",
-                "sptakiyashahime"
-              ],
-              "style": [
-                "中速",
-                "反卑白"
-              ],
-              "difficulty": 3,
-              "risk_level": "中",
-              "reason": "对方卑白体系时，可以直接走卑、因、SP白、阎、茶的中速应对。"
-            },
-            {
-              "id": "taira_fuken_enma_flex_vs_himiko_spkohaku",
-              "name": "平岳阎变阵",
+              "id": "taira_fuken_omoikane_spenma_fifth_vs_ban_tun_himiko_spkohaku",
+              "name": "平岳思摩",
               "picks": [
                 "taira",
                 "spfuken",
-                "enma"
+                "omoikane",
+                "spyamalordenma"
+              ],
+              "fifth_options": [
+                "himiko",
+                "guijin"
               ],
               "style": [
-                "变阵",
-                "平岳开"
+                "ban吞",
+                "反卑白",
+                "神乐"
               ],
               "difficulty": 4,
               "risk_level": "中",
-              "reason": "也可以平、岳、阎开，剩下两手看对方阵容补。",
-              "fifth_pick_branches": [
-                {
-                  "id": "enemy_picks_magatsuhi",
-                  "enemy_picks_contains": [
-                    "ssrmagetsuhi"
-                  ],
-                  "next_picks": [
-                    "spzashiki",
-                    "tsukuyomi"
-                  ],
-                  "reason": "如果对面上祸津神之类，可以补扭蛋+月读。"
-                }
-              ]
+              "reason": "对手ban吞大概率玩卑+SP白时，我方平、岳、思、摩，5手卑/羊；阴阳师带神乐。"
             }
           ]
         },
@@ -475,6 +907,84 @@
       }
     },
     {
+      "id": "vs_enemy_ban_taishakuten_017_sit",
+      "title": "对方ban帝 · 坐地017",
+      "enemy_ban": "taishakuten",
+      "enemy_systems": [
+        {
+          "id": "ban_taisha_017_sit",
+          "name": "坐地017阵容",
+          "initial_score": 42,
+          "core_picks": [
+            "spsuzuhikohime"
+          ],
+          "confirm_picks": [
+            "spsuzuhikohime",
+            "omoikane",
+            "nyunai"
+          ],
+          "fuzzy_picks": [
+            "taira",
+            "spfuken",
+            "spzashiki",
+            "spyamalordenma",
+            "spshutendoji"
+          ],
+          "notes": "对方ban帝并露出SP017时，先按坐地017阵容预案处理；如果同时看到思金神或入内雀，基本可以确认这个方向。",
+          "recommended_lineups": [
+            {
+              "id": "taira_fuken_zashiki_spenma_fifth_vs_ban_taisha_017_sit",
+              "name": "有扭蛋：平岳蛋摩",
+              "picks": [
+                "taira",
+                "spfuken",
+                "spzashiki",
+                "spyamalordenma"
+              ],
+              "fifth_options": [
+                "otakemaru",
+                "sphannya"
+              ],
+              "style": [
+                "ban帝",
+                "坐地017",
+                "有扭蛋"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "对方ban帝走坐地017时，有扭蛋玩法：平、岳、扭蛋、摩托，5手麓丸/芋圆。 017常见搭配思/雀。"
+            },
+            {
+              "id": "taira_fuken_tun_spenma_fifth_vs_ban_taisha_017_sit",
+              "name": "无扭蛋：平岳吞摩",
+              "picks": [
+                "taira",
+                "spfuken",
+                "spshutendoji",
+                "spyamalordenma"
+              ],
+              "fifth_options": [
+                "otakemaru",
+                "sphannya"
+              ],
+              "style": [
+                "ban帝",
+                "坐地017",
+                "无扭蛋"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "没有扭蛋时，走平、岳、鬼吞、摩托，5手麓丸/芋圆。 017常见搭配思/雀。"
+            }
+          ]
+        }
+      ],
+      "ambiguous_policy": {
+        "keep_all_systems": true,
+        "message": "如果对方ban帝但还没看到SP017，先继续观察是否为坐地017阵容。"
+      }
+    },
+    {
       "id": "vs_enemy_ban_enma",
       "title": "对方ban阎魔 · 千连熊 / 挖土",
       "enemy_ban": "enma",
@@ -541,7 +1051,7 @@
         {
           "id": "enma_ban_watu_inaba_cha_men",
           "name": "因茶面挖土",
-          "initial_score": 35,
+          "initial_score": 38,
           "required_picks": [
             "spinabakaguya",
             "sptakiyashahime",
@@ -553,32 +1063,56 @@
             "menreiki"
           ],
           "fuzzy_picks": [],
-          "notes": "对方因幡、茶几、面灵气时，按挖土阵容处理。",
+          "notes": "对方因幡、茶几、面灵气时，按挖土阵容处理；根据我方卑弥呼速度选择卑快或卑慢方案。",
           "recommended_lineups": [
             {
-              "id": "fuken_taira_spkohaku_himiko_ameonna_vs_enma_ban_watu_cha",
-              "name": "岳平SP白卑雨女",
+              "id": "taira_fuken_spkohaku_himiko_ameonna_vs_enma_ban_watu_fast_himiko",
+              "name": "平岳SP白卑雨女",
               "picks": [
-                "spfuken",
                 "taira",
+                "spfuken",
                 "spkohaku",
                 "himiko",
                 "ameonna"
               ],
               "style": [
                 "反挖土",
-                "ban阎"
+                "ban阎",
+                "卑快方案"
               ],
               "difficulty": 4,
               "risk_level": "中",
-              "reason": "对方挖土时，我方岳、平、SP白、卑、雨女；岳带海图，平带网切。"
+              "reason": "如果我方卑弥呼更快，对方挖土时走平、岳、SP白、卑、雨女。"
+            },
+            {
+              "id": "fuken_sp017_omoikane_spenma_fifth_vs_enma_ban_watu_slow_himiko",
+              "name": "岳017思摩",
+              "picks": [
+                "spfuken",
+                "spsuzuhikohime",
+                "omoikane",
+                "spyamalordenma"
+              ],
+              "fifth_options": [
+                "odokuro",
+                "nyunai",
+                "ssryuki"
+              ],
+              "style": [
+                "反挖土",
+                "ban阎",
+                "卑慢方案"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "如果我方卑弥呼不够快，改走岳、SP017、思、摩托，5手骷髅/入内雀/雪童子。"
             }
           ]
         },
         {
           "id": "enma_ban_watu_inaba_loong_men",
           "name": "因龙面挖土",
-          "initial_score": 35,
+          "initial_score": 38,
           "required_picks": [
             "spinabakaguya",
             "loongjue",
@@ -590,25 +1124,171 @@
             "menreiki"
           ],
           "fuzzy_picks": [],
-          "notes": "对方因幡、龙珏、面灵气时，按挖土阵容处理。",
+          "notes": "对方因幡、龙珏、面灵气时，按挖土阵容处理；根据我方卑弥呼速度选择卑快或卑慢方案。",
           "recommended_lineups": [
             {
-              "id": "fuken_taira_spkohaku_himiko_ameonna_vs_enma_ban_watu_loong",
-              "name": "岳平SP白卑雨女",
+              "id": "taira_fuken_spkohaku_himiko_ameonna_vs_enma_ban_watu_fast_himiko",
+              "name": "平岳SP白卑雨女",
               "picks": [
-                "spfuken",
                 "taira",
+                "spfuken",
                 "spkohaku",
                 "himiko",
                 "ameonna"
               ],
               "style": [
                 "反挖土",
-                "ban阎"
+                "ban阎",
+                "卑快方案"
               ],
               "difficulty": 4,
               "risk_level": "中",
-              "reason": "对方挖土时，我方岳、平、SP白、卑、雨女；岳带海图，平带网切。"
+              "reason": "如果我方卑弥呼更快，对方挖土时走平、岳、SP白、卑、雨女。"
+            },
+            {
+              "id": "fuken_sp017_omoikane_spenma_fifth_vs_enma_ban_watu_slow_himiko",
+              "name": "岳017思摩",
+              "picks": [
+                "spfuken",
+                "spsuzuhikohime",
+                "omoikane",
+                "spyamalordenma"
+              ],
+              "fifth_options": [
+                "odokuro",
+                "nyunai",
+                "ssryuki"
+              ],
+              "style": [
+                "反挖土",
+                "ban阎",
+                "卑慢方案"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "如果我方卑弥呼不够快，改走岳、SP017、思、摩托，5手骷髅/入内雀/雪童子。"
+            }
+          ]
+        },
+        {
+          "id": "enma_ban_watu_inaba_cha_himiko",
+          "name": "因茶卑挖土",
+          "initial_score": 38,
+          "required_picks": [
+            "spinabakaguya",
+            "sptakiyashahime",
+            "himiko"
+          ],
+          "confirm_picks": [
+            "spinabakaguya",
+            "sptakiyashahime",
+            "himiko"
+          ],
+          "fuzzy_picks": [],
+          "notes": "对方因幡、茶几、卑弥呼时，按挖土阵容处理；根据我方卑弥呼速度选择卑快或卑慢方案。",
+          "recommended_lineups": [
+            {
+              "id": "taira_fuken_spkohaku_himiko_ameonna_vs_enma_ban_watu_fast_himiko",
+              "name": "平岳SP白卑雨女",
+              "picks": [
+                "taira",
+                "spfuken",
+                "spkohaku",
+                "himiko",
+                "ameonna"
+              ],
+              "style": [
+                "反挖土",
+                "ban阎",
+                "卑快方案"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "如果我方卑弥呼更快，对方挖土时走平、岳、SP白、卑、雨女。"
+            },
+            {
+              "id": "fuken_sp017_omoikane_spenma_fifth_vs_enma_ban_watu_slow_himiko",
+              "name": "岳017思摩",
+              "picks": [
+                "spfuken",
+                "spsuzuhikohime",
+                "omoikane",
+                "spyamalordenma"
+              ],
+              "fifth_options": [
+                "odokuro",
+                "nyunai",
+                "ssryuki"
+              ],
+              "style": [
+                "反挖土",
+                "ban阎",
+                "卑慢方案"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "如果我方卑弥呼不够快，改走岳、SP017、思、摩托，5手骷髅/入内雀/雪童子。"
+            }
+          ]
+        },
+        {
+          "id": "enma_ban_watu_inaba_loong_himiko",
+          "name": "因龙卑挖土",
+          "initial_score": 38,
+          "required_picks": [
+            "spinabakaguya",
+            "loongjue",
+            "himiko"
+          ],
+          "confirm_picks": [
+            "spinabakaguya",
+            "loongjue",
+            "himiko"
+          ],
+          "fuzzy_picks": [],
+          "notes": "对方因幡、龙珏、卑弥呼时，按挖土阵容处理；根据我方卑弥呼速度选择卑快或卑慢方案。",
+          "recommended_lineups": [
+            {
+              "id": "taira_fuken_spkohaku_himiko_ameonna_vs_enma_ban_watu_fast_himiko",
+              "name": "平岳SP白卑雨女",
+              "picks": [
+                "taira",
+                "spfuken",
+                "spkohaku",
+                "himiko",
+                "ameonna"
+              ],
+              "style": [
+                "反挖土",
+                "ban阎",
+                "卑快方案"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "如果我方卑弥呼更快，对方挖土时走平、岳、SP白、卑、雨女。"
+            },
+            {
+              "id": "fuken_sp017_omoikane_spenma_fifth_vs_enma_ban_watu_slow_himiko",
+              "name": "岳017思摩",
+              "picks": [
+                "spfuken",
+                "spsuzuhikohime",
+                "omoikane",
+                "spyamalordenma"
+              ],
+              "fifth_options": [
+                "odokuro",
+                "nyunai",
+                "ssryuki"
+              ],
+              "style": [
+                "反挖土",
+                "ban阎",
+                "卑慢方案"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "如果我方卑弥呼不够快，改走岳、SP017、思、摩托，5手骷髅/入内雀/雪童子。"
             }
           ]
         }
@@ -623,6 +1303,71 @@
       "title": "对方ban禅 · 离封 / 平吞追",
       "enemy_ban": "spungaikyo",
       "enemy_systems": [
+        {
+          "id": "li_feng_first_two",
+          "name": "离封体系",
+          "initial_score": 45,
+          "required_first_n_picks": {
+            "n": 2,
+            "picks": [
+              "shiranui",
+              "fengyang"
+            ]
+          },
+          "confirm_picks_first_n": {
+            "n": 2,
+            "picks": [
+              "shiranui",
+              "fengyang"
+            ]
+          },
+          "fuzzy_picks": [],
+          "notes": "对方前两手是离+封时，先按ban禅常见离封体系处理。",
+          "recommended_lineups": [
+            {
+              "id": "fuken_taira_enma_zashiki_fifth_vs_li_feng_first_two",
+              "name": "有扭蛋：岳平阎扭蛋",
+              "picks": [
+                "spfuken",
+                "taira",
+                "enma",
+                "spzashiki"
+              ],
+              "fifth_options": [
+                "ssrmagetsuhi",
+                "jiaotu"
+              ],
+              "style": [
+                "离封",
+                "有扭蛋"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "我方先上SP岳+平，3手阎魔，4手扭蛋，5手祸或椒图。SP岳带海图；平网切/薙魂皆可。注意：如果玩椒图，阎魔要带火灵；不玩椒图，阎魔可散件。"
+            },
+            {
+              "id": "fuken_sp017_omoikane_taira_fifth_vs_li_feng_first_two",
+              "name": "无扭蛋：岳铃思平",
+              "picks": [
+                "spfuken",
+                "spsuzuhikohime",
+                "omoikane",
+                "taira"
+              ],
+              "fifth_options": [
+                "nyunai",
+                "odokuro"
+              ],
+              "style": [
+                "离封",
+                "无扭蛋"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "无扭蛋玩法：SP岳、SP017、思、薙魂平，5手入内雀或骷髅。SP岳带海图。"
+            }
+          ]
+        },
         {
           "id": "li_feng_taira_kannazuki",
           "name": "离封平神",
@@ -662,6 +1407,67 @@
               "difficulty": 4,
               "risk_level": "中",
               "reason": "对手离封平神时，我方岳、平、帝、阎，5手卑或羊；岳带海图，对面有平时我方网切平更佳。"
+            }
+          ]
+        },
+        {
+          "id": "feng_taira_kannazuki",
+          "name": "封平神",
+          "initial_score": 40,
+          "required_picks": [
+            "fengyang",
+            "taira",
+            "kannazuki"
+          ],
+          "confirm_picks": [
+            "fengyang",
+            "taira",
+            "kannazuki"
+          ],
+          "fuzzy_picks": [],
+          "notes": "有些队伍不上离，只要对方是封、平、神无月，也按类似离封平神处理。",
+          "recommended_lineups": [
+            {
+              "id": "fuken_taira_omoikane_fengyang_vs_feng_taira_kannazuki",
+              "name": "岳平思封",
+              "picks": [
+                "spfuken",
+                "taira",
+                "omoikane",
+                "fengyang"
+              ],
+              "fifth_options": [
+                "spshutendoji"
+              ],
+              "style": [
+                "反封平神",
+                "ban禅"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "对方封平神时，我方岳、平、思、封，默认5手吞；岳带海图，吞带蚌精。",
+              "fifth_pick_branches": [
+                {
+                  "id": "enemy_picks_enma",
+                  "enemy_picks_contains": [
+                    "enma"
+                  ],
+                  "next_picks": [
+                    "taki"
+                  ],
+                  "reason": "如果对方上阎魔，可能要挖我们，5手补蚌精泷防挖。"
+                },
+                {
+                  "id": "enemy_picks_sp017",
+                  "enemy_picks_contains": [
+                    "spsuzuhikohime"
+                  ],
+                  "next_picks": [
+                    "himiko"
+                  ],
+                  "reason": "如果对方上SP017，我方5手可以补卑弥呼。"
+                }
+              ]
             }
           ]
         },
@@ -790,23 +1596,73 @@
       }
     },
     {
+      "id": "vs_enemy_ban_ssrmagetsuhi_omoikane_susanoo",
+      "title": "对方ban祸 · 思须",
+      "enemy_ban": "ssrmagetsuhi",
+      "enemy_systems": [
+        {
+          "id": "ban_magatsuhi_omoikane_susanoo",
+          "name": "思须体系",
+          "initial_score": 45,
+          "required_picks": [
+            "omoikane",
+            "susanoo"
+          ],
+          "confirm_picks": [
+            "omoikane",
+            "susanoo"
+          ],
+          "fuzzy_picks": [
+            "taira",
+            "spfuken",
+            "enma",
+            "himiko"
+          ],
+          "notes": "对方ban祸且出现思金神+须佐之男时，按思须体系处理。",
+          "recommended_lineups": [
+            {
+              "id": "fuken_taira_enma_himiko_kujaku_vs_ban_magatsuhi_omoikane_susanoo",
+              "name": "岳平阎卑孔",
+              "picks": [
+                "spfuken",
+                "taira",
+                "enma",
+                "himiko",
+                "kujaku"
+              ],
+              "style": [
+                "ban祸",
+                "反思须"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "对方ban祸玩思须时，我方岳、平、阎、卑、孔；平带薙魂。孔雀最好超卡速卑，如果做不到就一速卑+240返魂香孔。"
+            }
+          ]
+        }
+      ],
+      "ambiguous_policy": {
+        "keep_all_systems": true,
+        "message": "如果对方ban祸但还没看到思金神+须佐之男，先继续观察是否为思须体系。"
+      }
+    },
+    {
       "id": "vs_enemy_ban_kuzunoha_mirror",
-      "title": "对方ban葛 · 火山内战",
-      "enemy_ban": "kuzunoha",
+      "title": "火山内战 · 多ban位通用",
       "default_recommendation": {
-        "id": "taira_fuken_open",
-        "name": "平岳开",
+        "id": "huoshan_mirror_prepare",
+        "name": "先按火山内战观察",
         "first_picks": [
           "taira",
           "spfuken"
         ],
         "first_builds": [],
-        "reason": "对方也ban葛叶时，先按火山内战处理，我方平岳开。"
+        "reason": "火山内战可出现在多个ban位里，但排除对方ban平；先按对方平岳开、平岳思阎、017等信号继续判断。"
       },
       "enemy_systems": [
         {
           "id": "huoshan_mirror",
-          "name": "火山内战",
+          "name": "火山内战泛用",
           "initial_score": 40,
           "core_picks": [
             "spfuken"
@@ -819,7 +1675,7 @@
             "spyamalordenma"
           ],
           "fuzzy_picks": [],
-          "notes": "对方也是火山体系时，我方平岳开，后续在三套阵容里根据局面选择。",
+          "notes": "对方也是火山体系时，我方先按平岳开观察；具体变阵优先看平岳思阎、平岳蛋摩/阎、017等信号。 旧版攻略保留供参考；SP铃彦姬版本优先看更具体的命中体系。",
           "recommended_lineups": [
             {
               "id": "mirror_taira_fuken_zashiki_enma_fifth",
@@ -837,7 +1693,8 @@
               ],
               "style": [
                 "火山内战",
-                "平岳开"
+                "平岳开",
+                "旧版参考"
               ],
               "difficulty": 3,
               "risk_level": "中",
@@ -860,7 +1717,8 @@
               ],
               "style": [
                 "火山内战",
-                "平岳开"
+                "平岳开",
+                "旧版参考"
               ],
               "difficulty": 3,
               "risk_level": "中",
@@ -878,7 +1736,8 @@
               ],
               "style": [
                 "火山内战",
-                "控制岳"
+                "控制岳",
+                "旧版参考"
               ],
               "difficulty": 4,
               "risk_level": "中",
@@ -1046,12 +1905,438 @@
               "reason": "对方禅羊时，我方平、思、阎、帝，5手椒图或月读。"
             }
           ]
+        },
+        {
+          "id": "mirror_enemy_taira_fuken_omoikane_enma",
+          "name": "对方平岳思阎",
+          "initial_score": 55,
+          "required_picks": [
+            "taira",
+            "spfuken",
+            "omoikane",
+            "enma"
+          ],
+          "confirm_picks": [
+            "taira",
+            "spfuken",
+            "omoikane",
+            "enma"
+          ],
+          "fuzzy_picks": [],
+          "notes": "对方平岳思阎时，可走扭蛋摩托或思阎两种方向。扭蛋玩法御魂要求最高：刚需共潜扭蛋、快火灵阎魔、木魅摩托。",
+          "recommended_lineups": [
+            {
+              "id": "mirror_vs_taira_fuken_omoikane_enma_zashiki_moto",
+              "name": "扭蛋：平岳扭蛋摩托",
+              "picks": [
+                "taira",
+                "spfuken",
+                "spzashiki",
+                "spyamalordenma"
+              ],
+              "fifth_options": [
+                "spshutendoji",
+                "otakemaru",
+                "sphoshiguma"
+              ],
+              "style": [
+                "火山内战",
+                "有扭蛋"
+              ],
+              "difficulty": 5,
+              "risk_level": "中",
+              "reason": "对方平岳思阎时，我方平、海图岳、扭蛋、摩托，5手蚌精吞/麓丸/地藏SP星熊。"
+            },
+            {
+              "id": "mirror_vs_taira_fuken_omoikane_enma_omoikane_enma",
+              "name": "思阎：平岳思阎",
+              "picks": [
+                "taira",
+                "spfuken",
+                "omoikane",
+                "enma"
+              ],
+              "fifth_options": [
+                "himiko",
+                "fengyang",
+                "tsukuyomi",
+                "uryotohime"
+              ],
+              "style": [
+                "火山内战",
+                "玩思"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "对方平岳思阎时，也可平、蚌精岳、思、散件阎魔，5手卑/封/日女月读/UR刀。克制关系：封克月读，卑克封，UR刀都能打但阎魔得快；日女月读需要阎魔快过对面且对面不能带蚌精。"
+            }
+          ]
+        },
+        {
+          "id": "mirror_enemy_taira_fuken_zashiki_moto",
+          "name": "对方平岳蛋摩",
+          "initial_score": 50,
+          "required_picks": [
+            "taira",
+            "spfuken",
+            "spzashiki",
+            "spyamalordenma"
+          ],
+          "confirm_picks": [
+            "taira",
+            "spfuken",
+            "spzashiki",
+            "spyamalordenma"
+          ],
+          "fuzzy_picks": [],
+          "notes": "对方平岳蛋摩/阎时，我方平岳扭蛋阎方向处理。",
+          "recommended_lineups": [
+            {
+              "id": "mirror_vs_taira_fuken_zashiki_moto_zashiki_enma",
+              "name": "平岳扭蛋阎",
+              "picks": [
+                "taira",
+                "spfuken",
+                "spzashiki",
+                "enma"
+              ],
+              "fifth_options": [
+                "fengyang",
+                "spshutendoji",
+                "himiko"
+              ],
+              "style": [
+                "火山内战",
+                "有扭蛋"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "对方平岳蛋摩/阎时，我方平、海图岳、扭蛋、阎魔，5手封/吞/卑。"
+            }
+          ]
+        },
+        {
+          "id": "mirror_enemy_taira_fuken_zashiki_enma",
+          "name": "对方平岳蛋阎",
+          "initial_score": 50,
+          "required_picks": [
+            "taira",
+            "spfuken",
+            "spzashiki",
+            "enma"
+          ],
+          "confirm_picks": [
+            "taira",
+            "spfuken",
+            "spzashiki",
+            "enma"
+          ],
+          "fuzzy_picks": [],
+          "notes": "对方平岳蛋摩/阎时，我方平岳扭蛋阎方向处理。",
+          "recommended_lineups": [
+            {
+              "id": "mirror_vs_taira_fuken_zashiki_enma_zashiki_enma",
+              "name": "平岳扭蛋阎",
+              "picks": [
+                "taira",
+                "spfuken",
+                "spzashiki",
+                "enma"
+              ],
+              "fifth_options": [
+                "fengyang",
+                "spshutendoji",
+                "himiko"
+              ],
+              "style": [
+                "火山内战",
+                "有扭蛋"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "对方平岳蛋摩/阎时，我方平、海图岳、扭蛋、阎魔，5手封/吞/卑。"
+            }
+          ]
+        },
+        {
+          "id": "mirror_enemy_sp017_core",
+          "name": "017火山阵容",
+          "initial_score": 50,
+          "required_picks": [
+            "spsuzuhikohime"
+          ],
+          "confirm_picks": [
+            "spsuzuhikohime",
+            "taira",
+            "spfuken",
+            "spzashiki",
+            "spyamalordenma"
+          ],
+          "fuzzy_picks": [],
+          "notes": "新版火山队以SP017作为核心时，我方平岳蛋摩，5手地藏芋圆或帝。",
+          "recommended_lineups": [
+            {
+              "id": "mirror_vs_sp017_taira_fuken_zashiki_moto",
+              "name": "平岳蛋摩",
+              "picks": [
+                "taira",
+                "spfuken",
+                "spzashiki",
+                "spyamalordenma"
+              ],
+              "fifth_options": [
+                "sphannya",
+                "taishakuten"
+              ],
+              "style": [
+                "反017",
+                "火山内战"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "对方017阵容时，我方平、岳、扭蛋、摩托，5手地藏芋圆或帝释天。"
+            }
+          ]
+        },
+        {
+          "id": "mirror_ban_kuzunoha_zen_tun_kannazuki_taira",
+          "name": "ban葛 · 禅吞神平",
+          "enemy_bans": [
+            "kuzunoha"
+          ],
+          "initial_score": 58,
+          "required_picks": [
+            "spungaikyo",
+            "spshutendoji",
+            "kannazuki",
+            "taira"
+          ],
+          "confirm_picks": [
+            "spungaikyo",
+            "spshutendoji",
+            "kannazuki",
+            "taira"
+          ],
+          "fuzzy_picks": [],
+          "notes": "对手ban葛且禅吞神平齐时，按平岳卑帝开，5手摩托/吞。 也可走平岳卑SSR蛇直接挖。",
+          "recommended_lineups": [
+            {
+              "id": "mirror_ban_kuzunoha_vs_zen_tun_kannazuki_taira",
+              "name": "平岳卑帝",
+              "picks": [
+                "taira",
+                "spfuken",
+                "himiko",
+                "taishakuten"
+              ],
+              "fifth_options": [
+                "spyamalordenma",
+                "spshutendoji"
+              ],
+              "style": [
+                "ban葛",
+                "反禅吞神平"
+              ],
+              "difficulty": 3,
+              "risk_level": "中",
+              "reason": "对手禅吞神平时，我方平、岳、卑、帝，5手摩托/鬼吞。"
+            },
+            {
+              "id": "mirror_ban_kuzunoha_vs_zen_tun_kannazuki_taira_dig_orochi",
+              "name": "直接挖：平岳卑蛇",
+              "picks": [
+                "taira",
+                "spfuken",
+                "himiko",
+                "ssrorochi"
+              ],
+              "fifth_options": [
+                "loongjue",
+                "enma"
+              ],
+              "style": [
+                "ban葛",
+                "反禅吞神平",
+                "直接挖"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "对手禅吞神平时，也可以直接挖：平、岳、卑、SSR蛇，5手龙珏/阎魔。"
+            }
+          ]
+        },
+        {
+          "id": "mirror_ban_kuzunoha_zen_tun_odokuro",
+          "name": "ban葛 · 禅吞骷",
+          "enemy_bans": [
+            "kuzunoha"
+          ],
+          "initial_score": 54,
+          "required_picks": [
+            "spungaikyo",
+            "spshutendoji",
+            "odokuro"
+          ],
+          "confirm_picks": [
+            "spungaikyo",
+            "spshutendoji",
+            "odokuro"
+          ],
+          "fuzzy_picks": [],
+          "notes": "对手ban葛且禅吞骷成型时，我方平岳帝阎，5手椒图/卑。 也可走平岳卑SSR蛇直接挖。",
+          "recommended_lineups": [
+            {
+              "id": "mirror_ban_kuzunoha_vs_zen_tun_odokuro",
+              "name": "平岳帝阎",
+              "picks": [
+                "taira",
+                "spfuken",
+                "taishakuten",
+                "enma"
+              ],
+              "fifth_options": [
+                "jiaotu",
+                "himiko"
+              ],
+              "style": [
+                "ban葛",
+                "反禅吞骷"
+              ],
+              "difficulty": 3,
+              "risk_level": "中",
+              "reason": "对方禅吞骷时，我方平、岳、帝、阎，5手椒图/卑。"
+            },
+            {
+              "id": "mirror_ban_kuzunoha_vs_zen_tun_odokuro_dig_orochi",
+              "name": "直接挖：平岳卑蛇",
+              "picks": [
+                "taira",
+                "spfuken",
+                "himiko",
+                "ssrorochi"
+              ],
+              "fifth_options": [
+                "loongjue",
+                "enma"
+              ],
+              "style": [
+                "ban葛",
+                "反禅吞骷",
+                "直接挖"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "对手禅吞骷时，也可以直接挖：平、岳、卑、SSR蛇，5手龙珏/阎魔。"
+            }
+          ]
+        },
+        {
+          "id": "mirror_ban_kuzunoha_qian_lian_xiong",
+          "name": "ban葛 · 千连熊",
+          "enemy_bans": [
+            "kuzunoha"
+          ],
+          "initial_score": 56,
+          "required_picks": [
+            "ssrsenhime",
+            "ssrichi",
+            "sphoshiguma"
+          ],
+          "confirm_picks": [
+            "ssrsenhime",
+            "ssrichi",
+            "sphoshiguma"
+          ],
+          "fuzzy_picks": [],
+          "notes": "对手ban葛走千连熊时，我方平思帝开；帝释天走共潜，后续看老头或云熊神平。",
+          "recommended_lineups": [
+            {
+              "id": "mirror_ban_kuzunoha_vs_qian_lian_xiong_base",
+              "name": "平思帝开",
+              "picks": [
+                "taira",
+                "omoikane",
+                "taishakuten"
+              ],
+              "style": [
+                "ban葛",
+                "反千连熊"
+              ],
+              "difficulty": 3,
+              "risk_level": "中",
+              "reason": "对方千连熊时，我方先平、思、帝开；帝释天带共潜，4/5手根据老头或云熊神平继续分支。"
+            },
+            {
+              "id": "mirror_ban_kuzunoha_vs_qian_lian_xiong_ebisu",
+              "name": "平思帝阎",
+              "enemy_opening_contains": [
+                "spebisu"
+              ],
+              "picks": [
+                "taira",
+                "omoikane",
+                "taishakuten",
+                "enma"
+              ],
+              "fifth_options": [
+                "uryotohime",
+                "kyuumei",
+                "himiko"
+              ],
+              "style": [
+                "ban葛",
+                "反千连熊",
+                "对手有老头"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "对手千连熊里有老头时，我方4阎，5手UR刀/SP猫/卑。"
+            },
+            {
+              "id": "mirror_ban_kuzunoha_vs_qian_lian_xiong_yun_xiong_shen_taira",
+              "name": "平思帝吞",
+              "enemy_opening_contains": [
+                "ungaikyo",
+                "sphoshiguma",
+                "kannazuki",
+                "taira"
+              ],
+              "picks": [
+                "taira",
+                "omoikane",
+                "taishakuten",
+                "spshutendoji"
+              ],
+              "fifth_options": [
+                "spungaikyo",
+                "himiko",
+                "enma"
+              ],
+              "style": [
+                "ban葛",
+                "反千连熊",
+                "对手云熊神平"
+              ],
+              "difficulty": 4,
+              "risk_level": "中",
+              "reason": "对手云熊神平时，我方4蚌精鬼吞，5手禅/卑/阎。"
+            }
+          ]
         }
       ],
       "ambiguous_policy": {
         "keep_all_systems": true,
-        "message": "对方也ban葛叶时，先按火山内战保留三套平岳开方案。"
-      }
+        "message": "多个ban位都可能蹭火山内战；如果还没看到平岳、思阎、扭蛋摩托或017，先继续观察。"
+      },
+      "enemy_bans": [
+        "kuzunoha",
+        "spungaikyo",
+        "enma",
+        "fengyang",
+        "spshutendoji",
+        "odokuro",
+        "ssrmagetsuhi"
+      ]
     }
   ]
 }
