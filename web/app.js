@@ -564,6 +564,7 @@ function getMatches() {
     .filter((strategy) => strategy.enabled !== false && strategy.our_ban === state.ourBan)
     .flatMap((strategy) => (strategy.matchups || []).map((matchup) => ({ strategy, matchup })))
     .filter(({ matchup }) => enemyBansFor(matchup).includes(state.enemyBan))
+    .filter(({ matchup }) => !intersects(enemyPicks, matchup.excluded_picks || []))
     .map(({ strategy, matchup }) => {
       const systems = (matchup.enemy_systems || [])
         .map((system) => {

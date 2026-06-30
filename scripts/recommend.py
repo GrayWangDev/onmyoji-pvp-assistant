@@ -199,6 +199,8 @@ def print_recommendations(args):
         for matchup in package.get("matchups", []):
             if enemy_ban not in matchup_enemy_bans(matchup):
                 continue
+            if intersects(enemy_picks, matchup.get("excluded_picks", [])):
+                continue
 
             matched_any = True
             print(f"## {matchup['title']}")

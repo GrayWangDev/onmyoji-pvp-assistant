@@ -675,7 +675,7 @@
           "spinabakaguya"
         ],
         "first_builds": [],
-        "reason": "对方ban泷/切/平/孔这类克制协战的式神时，可能是协战队；但离只是必要条件，看到离+猫川/红叶这类输出后再基本确认。"
+        "reason": "对方ban泷/切/平/孔这类克制协战的式神时，可能是协战队；但ban平如果对方龙珏开，优先按龙面挖土观察。离只是必要条件，看到离+猫川/红叶这类输出后再基本确认。"
       },
       "enemy_systems": [
         {
@@ -691,7 +691,7 @@
             "nekokawa"
           ],
           "fuzzy_picks": [],
-          "notes": "协战队必有离，但有离未必是协战；看到离+猫川时，按协战队处理。",
+          "notes": "协战队必有离，但有离未必是协战；看到离+猫川时，按协战队处理。若对方已经龙珏开，优先判龙面挖土，不走协战提示。",
           "recommended_lineups": [
             {
               "id": "himiko_cha_inaba_counter_slots_vs_coop",
@@ -731,6 +731,9 @@
               "risk_level": "中",
               "reason": "对方协战时，我方核心是卑、茶、因、孔、泷；如果对方ban掉泷/孔/切/平中的某张，就用剩下放出的克制卡补位。"
             }
+          ],
+          "excluded_picks": [
+            "loongjue"
           ]
         },
         {
@@ -746,7 +749,7 @@
             "spmomiji"
           ],
           "fuzzy_picks": [],
-          "notes": "协战队必有离，但有离未必是协战；看到离+红叶时，按协战队处理。",
+          "notes": "协战队必有离，但有离未必是协战；看到离+红叶时，按协战队处理。若对方已经龙珏开，优先判龙面挖土，不走协战提示。",
           "recommended_lineups": [
             {
               "id": "himiko_cha_inaba_counter_slots_vs_coop",
@@ -786,13 +789,19 @@
               "risk_level": "中",
               "reason": "对方协战时，我方核心是卑、茶、因、孔、泷；如果对方ban掉泷/孔/切/平中的某张，就用剩下放出的克制卡补位。"
             }
+          ],
+          "excluded_picks": [
+            "loongjue"
           ]
         }
       ],
       "ambiguous_policy": {
         "keep_all_systems": true,
-        "message": "如果只是看到对方ban了泷/切/平/孔，或只看到不知火，还不能确认协战；看到离+猫川/红叶后再锁定。"
-      }
+        "message": "如果只是看到对方ban了泷/切/平/孔，或只看到不知火，还不能确认协战；ban平且龙珏开时优先按龙面挖土观察。"
+      },
+      "excluded_picks": [
+        "loongjue"
+      ]
     },
     {
       "id": "vs_enemy_ban_spshutendoji",
@@ -1794,7 +1803,7 @@
                 "spshutendoji"
               ],
               "fifth_options": [
-                "kyuketsuhime"
+                "spkyuketsuhime"
               ],
               "style": [
                 "反禅吞",
@@ -1802,7 +1811,7 @@
               ],
               "difficulty": 3,
               "risk_level": "中",
-              "reason": "对方禅吞时也可走平、岳、羊、吞，5手吸血姬。"
+              "reason": "对方禅吞时也可走平、岳、羊、吞，5手SP吸血姬。"
             },
             {
               "id": "mirror_vs_zen_tun_taira_fuken_yang_taisha",
