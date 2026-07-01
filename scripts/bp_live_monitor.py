@@ -165,6 +165,7 @@ class MatchState:
         self.events = []
         self.markers = []
         self.round_starts = []
+        self.has_ban_phase = False
         self.reset()
 
     def reset(self):
@@ -174,18 +175,25 @@ class MatchState:
         self.events = []
         self.markers = []
         self.round_starts = []
+        self.has_ban_phase = False
 
-    def start(self, seconds, marker):
+    def start(self, seconds, marker, has_ban_phase=False):
         self.active = True
         self.start_seconds = seconds
         self.pending_event = None
         self.events = []
         self.markers = [marker]
         self.round_starts = [seconds]
+        self.has_ban_phase = has_ban_phase
 
     def add_round(self, seconds, marker):
         if not self.round_starts or seconds - self.round_starts[-1] > 2:
             self.round_starts.append(seconds)
+            self.markers.append(marker)
+
+    def mark_ban_phase(self, marker):
+        self.has_ban_phase = True
+        if marker not in self.markers:
             self.markers.append(marker)
 
     def finish(self, marker):
@@ -223,15 +231,7 @@ def split_snapshot(match):
     ban_window_end = (match.start_seconds or 0) + 18
     bans = {"我方": None, "敌方": None}
 
-    early_sides = set()
-    for event in events:
-        if event["seconds"] > ban_window_end:
-            continue
-        side = event.get("side")
-        if side in bans:
-            early_sides.add(side)
-
-    has_ban_phase = "我方" in early_sides and "敌方" in early_sides
+    has_ban_phase = match.has_ban_phase
     mode = "名士 BP" if has_ban_phase else "无 ban 选人"
 
     if has_ban_phase:
@@ -293,11 +293,18 @@ def process_log_line(line, match, resolver):
     seconds = time_to_seconds(time_match)
     time_text = f"{time_match.group(1)}:{time_match.group(2)}:{time_match.group(3)}"
 
+    if "Enter scene class:MasterPvpScene" in line:
+        if match.active:
+            match.mark_ban_phase(f"{time_text} 进入名士 BP")
+            return "ban_phase"
+        match.start(seconds, f"{time_text} 进入名士 BP", has_ban_phase=True)
+        return "start"
+
     if "ZhongxinquBattleSelectRound" in line and match.active:
         match.add_round(seconds, f"{time_text} 新一轮选人")
         return "round"
 
-    if "Enter scene class:MasterPvpScene" in line or "ZhongxinquBattlePreparePanel" in line or "ZhongxinquBattleSelectRound" in line:
+    if "ZhongxinquBattlePreparePanel" in line or "ZhongxinquBattleSelectRound" in line:
         if match.active:
             return None
         match.start(seconds, f"{time_text} 进入 BP/选人")
