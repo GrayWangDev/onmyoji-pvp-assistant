@@ -167,6 +167,7 @@ class MatchState:
         self.markers = []
         self.round_starts = []
         self.has_ban_phase = False
+        self.capture_until_seconds = None
         self.reset()
 
     def reset(self):
@@ -178,6 +179,7 @@ class MatchState:
         self.markers = []
         self.round_starts = []
         self.has_ban_phase = False
+        self.capture_until_seconds = None
 
     def start(self, seconds, marker, has_ban_phase=False):
         self.active = True
@@ -188,6 +190,7 @@ class MatchState:
         self.markers = [marker]
         self.round_starts = [seconds]
         self.has_ban_phase = has_ban_phase
+        self.capture_until_seconds = None
 
     def add_round(self, seconds, marker):
         if not self.round_starts or seconds - self.round_starts[-1] > 2:
@@ -199,10 +202,16 @@ class MatchState:
         if marker not in self.markers:
             self.markers.append(marker)
 
-    def finish(self, marker):
+    def finish(self, seconds, marker):
         self.markers.append(marker)
         self.active = False
         self.pending_event = None
+        self.capture_until_seconds = seconds + 10
+
+    def is_capturing(self, seconds):
+        if self.active:
+            return True
+        return self.capture_until_seconds is not None and seconds <= self.capture_until_seconds
 
     def add_event(self, event):
         self.events.append(event)
@@ -319,19 +328,23 @@ def process_log_line(line, match, resolver):
         return "start"
 
     if ("openUI PvpSlainPanel" in line or "ZhongxinquBattleRoundBegin" in line) and match.active:
-        match.finish(f"{time_text} BP 结束/进入战斗")
+        match.finish(seconds, f"{time_text} BP 结束/进入战斗，继续补抓 10 秒")
         return "finish"
 
     side_match = SIDE_RE.search(line)
-    if side_match and match.active:
+    if side_match and match.is_capturing(seconds):
         side = "我方" if side_match.group(1).lower() == "lan" else "敌方"
         match.assign_pending_side(side)
         return "side"
 
-    if not match.active:
+    if not match.is_capturing(seconds):
         return None
 
     for resource_path in RESOURCE_PATH_RE.findall(line):
+        resource_path_lower = resource_path.lower()
+        if not match.active and not resource_path_lower.startswith(("model/", "levelsets/dynamic/", "ui/bg/")):
+            continue
+
         candidates = path_to_candidates(resource_path)
         for resource in candidates:
             resolved = resolver.resolve(resource)
@@ -347,7 +360,7 @@ def process_log_line(line, match, resolver):
             match.add_event(event)
             return "event"
 
-        if resource_path.lower().startswith(("model/", "levelsets/dynamic/")):
+        if resource_path_lower.startswith(("model/", "levelsets/dynamic/", "ui/bg/")):
             match.add_unresolved(
                 {
                     "time": time_text,
