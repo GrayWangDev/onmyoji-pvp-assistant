@@ -382,7 +382,8 @@ class BPMonitorApp:
         status_bar.grid(row=1, column=0, sticky="ew")
         status_bar.columnconfigure(0, weight=1)
         ttk.Label(status_bar, textvariable=self.status).grid(row=0, column=0, sticky="w")
-        ttk.Button(status_bar, text="清空当前局", command=self.clear_match).grid(row=0, column=1)
+        ttk.Button(status_bar, text="导出本局", command=self.export_match).grid(row=0, column=1, padx=(0, 8))
+        ttk.Button(status_bar, text="清空当前局", command=self.clear_match).grid(row=0, column=2)
 
         content = ttk.PanedWindow(self.root, orient=tk.HORIZONTAL)
         content.grid(row=2, column=0, sticky="nsew", padx=12, pady=(0, 12))
@@ -484,6 +485,27 @@ class BPMonitorApp:
         self.match.reset()
         self.render_snapshot()
 
+    def export_match(self):
+        if self.match.start_seconds is None:
+            messagebox.showinfo("没有本局数据", "当前还没有识别到 BP/选人。")
+            return
+
+        path = filedialog.asksaveasfilename(
+            title="导出本局识别",
+            defaultextension=".txt",
+            filetypes=[("Text files", "*.txt"), ("All files", "*.*")],
+            initialfile="onmyoji_bp_debug.txt",
+        )
+        if not path:
+            return
+
+        try:
+            Path(path).write_text(build_match_report(self.match), encoding="utf-8")
+        except OSError as error:
+            messagebox.showerror("导出失败", str(error))
+            return
+        self.status.set(f"已导出本局识别：{path}")
+
     def poll(self):
         if not self.running or not self.file:
             return
@@ -565,6 +587,50 @@ def format_pick_slot(index, picks):
         resource = event.get("matched_resource") or event.get("resource")
         return f"{index}. {event['name']}  ({resource})"
     return f"{index}. 未识别"
+
+
+def build_match_report(match):
+    mode, bans, our_picks, enemy_picks, unknown = split_snapshot(match)
+    lines = [
+        f"模式: {mode}",
+        f"状态: {'进行中' if match.active else '已结束'}",
+        "",
+        "[Ban]",
+        f"我方 ban: {format_event_name(bans['我方']) if bans['我方'] else '无/未识别'}",
+        f"敌方 ban: {format_event_name(bans['敌方']) if bans['敌方'] else '无/未识别'}",
+        "",
+        "[敌方选人]",
+    ]
+
+    for index in range(1, 6):
+        lines.append(format_pick_slot(index, enemy_picks))
+
+    lines.append("")
+    lines.append("[我方选人]")
+    for index in range(1, 6):
+        lines.append(format_pick_slot(index, our_picks))
+
+    lines.append("")
+    lines.append("[轮次节点]")
+    for marker in match.markers:
+        lines.append(marker)
+
+    lines.append("")
+    lines.append("[识别时间线]")
+    for event in dedupe_events(match.events):
+        side = event.get("side") or "?"
+        lines.append(
+            f"{event['time']} | {side} | {event['name']} | "
+            f"resource={event['resource']} | matched={event['matched_resource']} | line={event['line_no']}"
+        )
+
+    if unknown:
+        lines.append("")
+        lines.append("[未分侧记录]")
+        for event in unknown:
+            lines.append(f"{event['time']} | {event['name']} | {event['resource']} | {event['matched_resource']}")
+
+    return "\n".join(lines) + "\n"
 
 
 def main():
