@@ -163,6 +163,7 @@ class MatchState:
         self.start_seconds = None
         self.pending_event = None
         self.events = []
+        self.unresolved_events = []
         self.markers = []
         self.round_starts = []
         self.has_ban_phase = False
@@ -173,6 +174,7 @@ class MatchState:
         self.start_seconds = None
         self.pending_event = None
         self.events = []
+        self.unresolved_events = []
         self.markers = []
         self.round_starts = []
         self.has_ban_phase = False
@@ -182,6 +184,7 @@ class MatchState:
         self.start_seconds = seconds
         self.pending_event = None
         self.events = []
+        self.unresolved_events = []
         self.markers = [marker]
         self.round_starts = [seconds]
         self.has_ban_phase = has_ban_phase
@@ -204,6 +207,11 @@ class MatchState:
     def add_event(self, event):
         self.events.append(event)
         self.pending_event = event
+
+    def add_unresolved(self, event):
+        self.unresolved_events.append(event)
+        if len(self.unresolved_events) > 200:
+            self.unresolved_events = self.unresolved_events[-200:]
 
     def assign_pending_side(self, side):
         if self.pending_event:
@@ -324,7 +332,8 @@ def process_log_line(line, match, resolver):
         return None
 
     for resource_path in RESOURCE_PATH_RE.findall(line):
-        for resource in path_to_candidates(resource_path):
+        candidates = path_to_candidates(resource_path)
+        for resource in candidates:
             resolved = resolver.resolve(resource)
             if not resolved or resolved["kind"] != "shikigami":
                 continue
@@ -337,6 +346,16 @@ def process_log_line(line, match, resolver):
             }
             match.add_event(event)
             return "event"
+
+        if resource_path.lower().startswith(("model/", "levelsets/dynamic/")):
+            match.add_unresolved(
+                {
+                    "time": time_text,
+                    "seconds": seconds,
+                    "resource_path": resource_path,
+                    "candidates": candidates,
+                }
+            )
 
     return None
 
@@ -629,6 +648,13 @@ def build_match_report(match):
         lines.append("[未分侧记录]")
         for event in unknown:
             lines.append(f"{event['time']} | {event['name']} | {event['resource']} | {event['matched_resource']}")
+
+    if match.unresolved_events:
+        lines.append("")
+        lines.append("[未识别模型资源]")
+        for event in match.unresolved_events:
+            candidates = ", ".join(event["candidates"])
+            lines.append(f"{event['time']} | {event['resource_path']} | candidates={candidates}")
 
     return "\n".join(lines) + "\n"
 
